@@ -8,7 +8,8 @@ import {
 import { useRecoilValue } from 'recoil';
 
 import Home from './Home/Home';
-import Signin from './Signin/Signin';
+import Signin from './account/Signin';
+import Signup from './account/Signup';
 import { authAtom } from './state';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,16 +18,12 @@ function App() {
   const auth = useRecoilValue(authAtom);
   console.log(auth);
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!auth) {
-      navigate('/signin');
-    }
-  }, [auth, navigate]);
+
   return (
     <Routes>
+      <Route exact path="/" element={auth ? <Home /> : <Signin />} />
       <Route path="/signin" element={<Signin />} />
-
-      <Route path="/" element={<Home />} />
+      <Route path="/signup" element={<Signup />} />
     </Routes>
   );
 }
