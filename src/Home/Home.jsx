@@ -16,9 +16,7 @@ function Home() {
         </h1>
         <h2>Weclome to SHrack!</h2>
         <p>Hi {auth?.username}!</p>
-        <Link to="./my.js">
-          <button> 녹화 시작 </button>
-        </Link>
+
         <br></br>
       </div>
     </div>
