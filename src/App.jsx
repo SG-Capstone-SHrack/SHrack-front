@@ -6,19 +6,26 @@ import {
   useNavigate,
 } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-//import PrivateRoute from './components/PrivateRoute';
+// import PrivateRoute from './components/PrivateRoute';
 import Home from './Home/Home';
+import Login from './account/Login';
 import { authAtom } from './state';
 import './App.css';
 
 function App() {
-  //const auth = useRecoilValue(authAtom);
+  const auth = useRecoilValue(authAtom);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!auth) {
+      navigate('/login');
+    }
+  }, [auth, navigate]);
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </Router>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Home />} />
+      {/* <PrivateRoute exact path="/" element={<Home />} /> */}
+    </Routes>
   );
 }
 
