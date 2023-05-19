@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
 
 import Home from './Home/Home';
 import Signin from './account/Signin';
@@ -11,7 +10,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   //const auth = useRecoilValue(authAtom);
-  const [auth, setAuth] = useRecoilState(authAtom);
+  // localStorage로부터 auth 정보를 가져온다.
+  const auth = localStorage.getItem('auth');
+  console.log(auth);
 
   return (
     <Routes>
