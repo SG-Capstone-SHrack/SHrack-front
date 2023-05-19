@@ -1,11 +1,6 @@
-import React, { useEffect } from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  useNavigate,
-} from 'react-router-dom';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 
 import Home from './Home/Home';
 import Signin from './account/Signin';
