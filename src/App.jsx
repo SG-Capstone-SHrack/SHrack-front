@@ -4,7 +4,6 @@ import { Route, Routes } from 'react-router-dom';
 import Home from './Home/Home';
 import Signin from './account/Signin';
 import Signup from './account/Signup';
-import { authAtom } from './state';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
