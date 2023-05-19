@@ -10,25 +10,42 @@ import {
   Alert,
   Row,
   Col,
+  Navbar,
 } from 'react-bootstrap';
 import axios from 'axios';
 
 function Signin() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
-  const [isAlert, setIsAlert] = useState(true);
+  const [isAlert, setIsAlert] = useState(false);
   useEffect(() => {
     console.log(id, password);
   }, [id, password]);
 
   // onSubmit -> Id와 Password를 받아서 서버에 전송
-  const onSubmit = data => {
+  const onSubmit = (e, data) => {
+    //디버깅을 위해 e.preventDefault() 사용
+    //실제 서버에 전송할 때는 e.preventDefault() 삭제
+    e.preventDefault();
     console.log(data);
     // 서버에 전송
+    // axios
+    //   .post('http://localhost:8000/api/auth/login/', data)
+    //   .then(res => {
+    //     console.log(res);
+    //     localStorage.setItem('auth', res.data.key);
+    //     window.location.href = '/';
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //     setIsAlert(true);
+    //   });
   };
   return (
     <Container>
-      <h1>SHRACK</h1>
+      <Navbar sticky="top" bg="light" expand="lg">
+        <Navbar.Brand href="#home">SHRACK</Navbar.Brand>
+      </Navbar>
       <Form>
         <Form.Group className="mb-3" controlId="signInId">
           <FloatingLabel controlId="signInID" label="아이디" className="mb-3">
