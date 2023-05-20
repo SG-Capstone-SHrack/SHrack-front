@@ -23,23 +23,32 @@ function Signin() {
   }, [id, password]);
 
   // onSubmit -> Id와 Password를 받아서 서버에 전송
-  const onSubmit = (e, data) => {
+  const onSubmit = e => {
     //디버깅을 위해 e.preventDefault() 사용
     //실제 서버에 전송할 때는 e.preventDefault() 삭제
+    const data = {
+      id: id,
+      password: password,
+    };
+    const headers = {
+      'Content-Type': 'application/json',
+    };
     e.preventDefault();
-    console.log(data);
+    //console.log(data);
     // 서버에 전송
-    // axios
-    //   .post('http://localhost:8000/api/auth/login/', data)
-    //   .then(res => {
-    //     console.log(res);
-    //     localStorage.setItem('auth', res.data.key);
-    //     window.location.href = '/';
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //     setIsAlert(true);
-    //   });
+    axios
+      .post('http://13.125.207.72:5000/login', JSON.stringify(data), {
+        headers,
+      })
+      .then(res => {
+        console.log(res);
+        localStorage.setItem('auth', res.data.key);
+        window.location.href = '/';
+      })
+      .catch(err => {
+        console.log(err);
+        setIsAlert(true);
+      });
   };
   return (
     <Container>
