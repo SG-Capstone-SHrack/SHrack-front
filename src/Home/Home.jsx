@@ -3,44 +3,107 @@ import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Card, Navbar, Nav } from 'react-bootstrap';
+import axios from 'axios';
 
 const HomePage = () => {
   const { id } = useParams();
   const [selectedDate, setSelectedDate] = useState(null);
   const [exerciseRecords, setExerciseRecords] = useState([]);
+  const [password, setPassword] = useState('');  //패스워드 받을 예정
+  const [isAlert, setIsAlert] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
     setExerciseRecords([]);
+    if (date) {
+      fetchExerciseRecords(date);
+    }
   };
 
   const handleFetchData = () => {
-    //데이터 받아오기 (임시 기록 2개)
+    //임시 데이터
     const fetchedRecords = [
       {
-        exerciseName: '운동1',
+        exerciseName: '운동 1',
         numberOfSets: 3,
         totalSets: 5,
         weight: 50,
         totalTime: '00:30:00',
       },
       {
-        exerciseName: '운동2',
+        exerciseName: '운동 2',
         numberOfSets: 4,
         totalSets: 6,
         weight: 40,
         totalTime: '00:25:00',
       },
     ];
-
     setExerciseRecords(fetchedRecords);
   };
 
-  useEffect(() => { //유저 아이디로 데이터 받아오기
+  const fetchExerciseRecords = (date) => {//date를 받아서 서버에 전송 => 추후 추가 예정
+    const authToken = localStorage.getItem('auth');
+    if (authToken) {
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization: authToken,
+      };
+
+      axios
+        .get(`http://your-api-endpoint/exercise-records?date=${date}`, { headers })
+        .then((response) => {
+          const fetchedRecords = response.data;
+          setExerciseRecords(fetchedRecords);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+
+  useEffect(() => {
     handleFetchData();
+
+    const authToken = localStorage.getItem('auth');
+    if (authToken && selectedDate) {
+      fetchExerciseRecords(selectedDate);
+    }
   }, [id]);
 
-  return ( //상단 바
+  const handleLogin = (e) => { // id와 password를 받아서 서버에 전송 => 추후 추가 예정
+    e.preventDefault();
+    if (!id || !password) {
+      setIsAlert(true);
+      return;
+    }
+
+    const data = {
+      id: id,
+      password: password,
+    };
+
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+
+    setIsLoading(true);
+    axios
+      .post('http://your-api-endpoint/login', JSON.stringify(data), { headers })
+      .then((res) => {
+        localStorage.setItem('auth', res.data.key);
+        window.location.href = '/';
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsAlert(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  //상단 메뉴바
+  return (
     <div>
       <Navbar bg="primary" variant="dark" expand="lg">
         <Navbar.Brand>SHrack</Navbar.Brand>
@@ -53,6 +116,7 @@ const HomePage = () => {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
+
       <div
         style={{
           display: 'flex',
@@ -64,7 +128,7 @@ const HomePage = () => {
         <Card style={{ width: '500px' }}>
           <Card.Body>
             <Card.Title style={{ marginBottom: '20px' }}>
-              Welcome to SHrack! Hello User {id}  
+              Welcome to SHrack! Hello User {id}
             </Card.Title>
             <DatePicker
               selected={selectedDate}
@@ -74,7 +138,7 @@ const HomePage = () => {
 
             {selectedDate && (
               <div>
-                <h6>Exercise informations on {selectedDate.toLocaleDateString()}</h6>
+                <h6>Exercise information on {selectedDate.toLocaleDateString()}</h6>
 
                 {exerciseRecords.map((record, index) => (
                   <Card key={index} style={{ marginBottom: '10px' }}>
@@ -103,7 +167,7 @@ const HomePage = () => {
                 ))}
 
                 {exerciseRecords.length === 0 && (
-                  <button onClick={handleFetchData}>Get your Exercise Data</button>
+                  <button onClick={handleFetchData}>Get Exercise Data</button>
                 )}
               </div>
             )}
@@ -113,4 +177,5 @@ const HomePage = () => {
     </div>
   );
 };
+
 export default HomePage;
