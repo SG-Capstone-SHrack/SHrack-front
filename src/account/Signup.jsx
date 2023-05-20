@@ -17,6 +17,7 @@ function Signup() {
   // 회원가입 정보
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
   const [gender, setGender] = useState('');
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
@@ -32,8 +33,8 @@ function Signup() {
         <Navbar.Text className="mr-auto">회원가입</Navbar.Text>
       </Navbar>
       <Form>
-        <Form.Group className="mb-3" controlId="signInId">
-          <FloatingLabel controlId="signInID" label="아이디" className="mb-3">
+        <Form.Group className="mb-3" controlId="id">
+          <FloatingLabel controlId="id" label="아이디" className="mb-3">
             <Form.Control
               type="ID"
               placeholder="아이디"
@@ -41,31 +42,48 @@ function Signup() {
             />
           </FloatingLabel>
         </Form.Group>
-        <Form.Group className="mb-3" controlId="signInPassword">
-          <FloatingLabel
-            controlId="signInPassword"
-            label="비밀번호"
-            className="mb-3">
-            <Form.Control
-              type="password"
-              placeholder="비밀번호"
-              onChange={e => setPassword(e.target.value)}
-            />
-          </FloatingLabel>
-        </Form.Group>
-
+        <Row>
+          <Col>
+            <Form.Group className="mb-3" controlId="password">
+              <FloatingLabel
+                controlId="password"
+                label="비밀번호"
+                className="mb-3">
+                <Form.Control
+                  type="password"
+                  placeholder="비밀번호"
+                  onChange={e => setPassword(e.target.value)}
+                />
+              </FloatingLabel>
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group className="mb-3" controlId="passwordCheck">
+              <FloatingLabel
+                controlId="passwordCheck"
+                label="비밀번호 확인"
+                className="mb-3">
+                <Form.Control
+                  type="password"
+                  placeholder="비밀번호 확인"
+                  onChange={e => setPassword(e.target.value)}
+                />
+              </FloatingLabel>
+            </Form.Group>
+          </Col>
+        </Row>
         <Row>
           <Col className="d-flex justify-content-center align-items-center">
             <Button
               size="lg"
               variant="primary"
               type="signIn"
-              onClick={console.log('hi')}>
+              onClick={console.log('')}>
               회원가입
             </Button>
           </Col>
           <Col className="d-flex justify-content-center align-items-center">
-            <Link to="/signup">
+            <Link to="/">
               <Button size="lg" variant="secondary" type="signUp">
                 돌아가기
               </Button>
