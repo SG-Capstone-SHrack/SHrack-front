@@ -13,17 +13,26 @@ import {
   Navbar,
 } from 'react-bootstrap';
 import axios from 'axios';
+import Loader from '../components/Loader';
 
 function Signin() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [isAlert, setIsAlert] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     console.log(id, password);
   }, [id, password]);
 
   // onSubmit -> Id와 Password를 받아서 서버에 전송
   const onSubmit = e => {
+    //id가 비어있거나  password가 비어있으면 return
+    if (!id || !password) {
+      e.preventDefault();
+      setIsAlert(true);
+      return;
+    }
+    console.log('비어있진않음');
     //디버깅을 위해 e.preventDefault() 사용
     //실제 서버에 전송할 때는 e.preventDefault() 삭제
     const data = {
@@ -36,24 +45,30 @@ function Signin() {
     e.preventDefault();
     //console.log(data);
     // 서버에 전송
+    setIsLoading(true);
     axios
       .post('http://13.125.207.72:5000/login', JSON.stringify(data), {
         headers,
       })
       .then(res => {
         console.log(res);
+        // 이 부분 수정해야함
         localStorage.setItem('auth', res.data.key);
         window.location.href = '/';
       })
       .catch(err => {
         console.log(err);
         setIsAlert(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
   return (
     <Container>
       <Navbar sticky="top" bg="light" expand="lg">
         <Navbar.Brand href="#home">SHRACK</Navbar.Brand>
+        <Navbar.Text className="mr-auto">로그인</Navbar.Text>
       </Navbar>
       <Form>
         <Form.Group className="mb-3" controlId="signInId">
@@ -101,6 +116,7 @@ function Signin() {
           </Col>
         </Row>
       </Form>
+      {isLoading && <Loader />}
     </Container>
   );
 }
