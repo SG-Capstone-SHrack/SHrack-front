@@ -17,6 +17,16 @@ import {
 function Signup() {
   // 회원가입 정보
   const [id, setId] = useState('');
+  const [isIdValid, setIsIdValid] = useState(false);
+  useEffect(() => {
+    // id validation check
+    if (id === '') {
+      setIsIdValid(false);
+    } else {
+      setIsIdValid(true);
+    }
+  }, [id]);
+
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [gender, setGender] = useState('');
@@ -25,22 +35,38 @@ function Signup() {
   const [birth, setBirth] = useState('');
   const [name, setName] = useState('');
 
-  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    console.log(gender, birth);
+  }, [gender, birth]);
 
+  const [isLoading, setIsLoading] = useState(false);
+  const onSubmit = e => {
+    if (
+      // validation check
+      true
+    ) {
+      e.preventDefault();
+      return;
+    }
+  };
   return (
     <Container>
       <Navbar sticky="top" bg="light" expand="lg">
         <Navbar.Brand href="#home">SHRACK</Navbar.Brand>
         <Navbar.Text className="mr-auto">회원가입</Navbar.Text>
       </Navbar>
-      <Form>
+      <Form onSubmit={onSubmit}>
         <Form.Group className="mb-3" controlId="id">
           <FloatingLabel controlId="id" label="아이디" className="mb-3">
             <Form.Control
               type="ID"
               placeholder="아이디"
               onChange={e => setId(e.target.value)}
+              isInvalid={isIdValid ? false : true}
             />
+            <Form.Control.Feedback type="invalid">
+              아이디를 입력해주세요.{' '}
+            </Form.Control.Feedback>
           </FloatingLabel>
         </Form.Group>
         <Row>
@@ -84,6 +110,30 @@ function Signup() {
         </Form.Group>
         <Row>
           <Col>
+            <Form.Group className="mb-3" controlId="height">
+              <FloatingLabel controlId="height" label="키" className="mb-3">
+                <Form.Control
+                  type="number"
+                  placeholder="키"
+                  onChange={e => setHeight(e.target.value)}
+                />
+              </FloatingLabel>
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group className="mb-3" controlId="weight">
+              <FloatingLabel controlId="weight" label="몸무게" className="mb-3">
+                <Form.Control
+                  type="number"
+                  placeholder="몸무게"
+                  onChange={e => setWeight(e.target.value)}
+                />
+              </FloatingLabel>
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
             <Card style={{ height: '100%' }}>
               <Card.Body>
                 <Form.Group controlId="gender">
@@ -93,7 +143,7 @@ function Signup() {
                       inline
                       type="radio"
                       label="남"
-                      name="gender"
+                      name="gender-male"
                       value="남"
                       checked={gender === '남'}
                       onChange={e => setGender(e.target.value)}
@@ -102,7 +152,7 @@ function Signup() {
                       inline
                       type="radio"
                       label="여"
-                      name="gender"
+                      name="gender-female"
                       value="여"
                       checked={gender === '여'}
                       onChange={e => setGender(e.target.value)}
@@ -127,14 +177,11 @@ function Signup() {
             </Card>
           </Col>
         </Row>
+
         <br />
         <Row>
           <Col className="d-flex justify-content-center align-items-center">
-            <Button
-              size="lg"
-              variant="primary"
-              type="signIn"
-              onClick={console.log('')}>
+            <Button size="lg" variant="primary" type="signIn">
               회원가입
             </Button>
           </Col>
