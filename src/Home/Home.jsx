@@ -1,38 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Card, Table, Form, Navbar, Nav } from 'react-bootstrap';
+import { Card, Navbar, Nav } from 'react-bootstrap';
 
 const HomePage = () => {
+  const { id } = useParams();
   const [selectedDate, setSelectedDate] = useState(null);
-  const [exerciseRecords, setExerciseRecords] = useState({});
-  const [userInfo, setUserInfo] = useState({ name: '' });
+  const [exerciseRecords, setExerciseRecords] = useState([]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-    setExerciseRecords({});
+    setExerciseRecords([]);
   };
 
-  const GetData = () => {
-    // 데이터 1개 임의로 설정(받아오는 형식에 따라 변경하기)
-    const fetchedRecords = {
-      exerciseName: 'Exercise Name',
-      numberOfSets: 3,
-      totalTime: '00:30:00',
-      weight: '100',
-    };
+  const handleFetchData = () => {
+    //데이터 받아오기 (임시 기록 2개)
+    const fetchedRecords = [
+      {
+        exerciseName: '운동1',
+        numberOfSets: 3,
+        totalSets: 5,
+        weight: 50,
+        totalTime: '00:30:00',
+      },
+      {
+        exerciseName: '운동2',
+        numberOfSets: 4,
+        totalSets: 6,
+        weight: 40,
+        totalTime: '00:25:00',
+      },
+    ];
+
     setExerciseRecords(fetchedRecords);
   };
 
-  const handleUserChange = (event) => {
-    const { name, value } = event.target;
-    setUserInfo((prevUserInfo) => ({
-      ...prevUserInfo,
-      [name]: value,
-    }));
-  };
+  useEffect(() => { //유저 아이디로 데이터 받아오기
+    handleFetchData();
+  }, [id]);
 
-  return (//상단바
+  return ( //상단 바
     <div>
       <Navbar bg="primary" variant="dark" expand="lg">
         <Navbar.Brand>SHrack</Navbar.Brand>
@@ -45,49 +53,57 @@ const HomePage = () => {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
         <Card style={{ width: '500px' }}>
           <Card.Body>
-            <Card.Title style={{ marginBottom: '20px' }}>Welcome to SHrack! Hello {userInfo.name}</Card.Title>
-            <Form.Group>
-              <Form.Label>User Name:</Form.Label>
-              <Form.Control type="text" name="name" onChange={handleUserChange} />
-            </Form.Group>
-            <DatePicker selected={selectedDate} onChange={handleDateChange} style={{ marginBottom: '20px' }} />
+            <Card.Title style={{ marginBottom: '20px' }}>
+              Welcome to SHrack! Hello User {id}  
+            </Card.Title>
+            <DatePicker
+              selected={selectedDate}
+              onChange={handleDateChange}
+              style={{ marginBottom: '20px' }}
+            />
 
             {selectedDate && (
               <div>
                 <h6>Exercise informations on {selectedDate.toLocaleDateString()}</h6>
-                {exerciseRecords.exerciseName && (
-                  <Table striped bordered>
-                    <thead>
-                      <tr>
-                        <th>Field Name</th>
-                        <th>Value</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Exercise Name</td>
-                        <td>{exerciseRecords.exerciseName}</td>
-                      </tr>
-                      <tr>
-                        <td>Number of Sets</td>
-                        <td>{exerciseRecords.numberOfSets}</td>
-                      </tr>
-                      <tr>
-                        <td>Total Time</td>
-                        <td>{exerciseRecords.totalTime}</td>
-                      </tr>
-                      <tr>
-                        <td>Weight</td>
-                        <td>{exerciseRecords.weight}</td>
-                      </tr>
-                    </tbody>
-                  </Table>
-                )}
-                {!exerciseRecords.exerciseName && (
-                  <button onClick={GetData}>Get My Exercise Data</button>
+
+                {exerciseRecords.map((record, index) => (
+                  <Card key={index} style={{ marginBottom: '10px' }}>
+                    <Card.Body>
+                      <Card.Title>{record.exerciseName}</Card.Title>
+                      <div style={{ display: 'flex', marginTop: '10px' }}>
+                        {[...Array(record.totalSets)].map((_, i) => (
+                          <div
+                            key={i}
+                            style={{
+                              backgroundColor: i < record.numberOfSets ? 'blue' : 'gray',
+                              width: '20px',
+                              height: '10px',
+                              marginRight: '5px',
+                            }}
+                          />
+                        ))}
+                      </div>
+                      <Card.Text>
+                        Number of Sets: {record.numberOfSets} / {record.totalSets}
+                      </Card.Text>
+                      <Card.Text>Weight: {record.weight} kg</Card.Text>
+                      <Card.Text>Total Time: {record.totalTime}</Card.Text>
+                    </Card.Body>
+                  </Card>
+                ))}
+
+                {exerciseRecords.length === 0 && (
+                  <button onClick={handleFetchData}>Get your Exercise Data</button>
                 )}
               </div>
             )}
