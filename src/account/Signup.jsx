@@ -8,6 +8,7 @@ import {
   Container,
   FloatingLabel,
   Alert,
+  Card,
   Row,
   Col,
   Navbar,
@@ -72,6 +73,61 @@ function Signup() {
             </Form.Group>
           </Col>
         </Row>
+        <Form.Group className="mb-3" controlId="id">
+          <FloatingLabel controlId="name" label="이름" className="mb-3">
+            <Form.Control
+              type="name"
+              placeholder="이름"
+              onChange={e => setName(e.target.value)}
+            />
+          </FloatingLabel>
+        </Form.Group>
+        <Row>
+          <Col>
+            <Card style={{ height: '100%' }}>
+              <Card.Body>
+                <Form.Group controlId="gender">
+                  <Form.Label>성별</Form.Label>
+                  <div>
+                    <Form.Check
+                      inline
+                      type="radio"
+                      label="남"
+                      name="gender"
+                      value="남"
+                      checked={gender === '남'}
+                      onChange={e => setGender(e.target.value)}
+                    />
+                    <Form.Check
+                      inline
+                      type="radio"
+                      label="여"
+                      name="gender"
+                      value="여"
+                      checked={gender === '여'}
+                      onChange={e => setGender(e.target.value)}
+                    />
+                  </div>
+                </Form.Group>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col>
+            <Card style={{ height: '100%' }}>
+              <Card.Body>
+                <Form.Group controlId="birthdate">
+                  <Form.Label>생년월일</Form.Label>
+                  <Form.Control
+                    type="date"
+                    value={birth}
+                    onChange={e => setBirth(e.target.value)}
+                  />
+                </Form.Group>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+        <br />
         <Row>
           <Col className="d-flex justify-content-center align-items-center">
             <Button
