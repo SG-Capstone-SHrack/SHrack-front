@@ -70,7 +70,7 @@ function Signin() {
         <Navbar.Brand href="#home">SHRACK</Navbar.Brand>
         <Navbar.Text className="mr-auto">로그인</Navbar.Text>
       </Navbar>
-      <Form>
+      <Form onSubmit={onSubmit}>
         <Form.Group className="mb-3" controlId="id">
           <FloatingLabel controlId="id" label="아이디" className="mb-3">
             <Form.Control
@@ -96,11 +96,7 @@ function Signin() {
         )}
         <Row>
           <Col className="d-flex justify-content-center align-items-center">
-            <Button
-              size="lg"
-              variant="primary"
-              type="signIn"
-              onClick={onSubmit}>
+            <Button size="lg" variant="primary" type="signIn">
               로그인
             </Button>
           </Col>
