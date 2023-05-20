@@ -32,7 +32,7 @@ function Signin() {
       setIsAlert(true);
       return;
     }
-    console.log('비어있진않음');
+
     //디버깅을 위해 e.preventDefault() 사용
     //실제 서버에 전송할 때는 e.preventDefault() 삭제
     const data = {
@@ -71,8 +71,8 @@ function Signin() {
         <Navbar.Text className="mr-auto">로그인</Navbar.Text>
       </Navbar>
       <Form>
-        <Form.Group className="mb-3" controlId="signInId">
-          <FloatingLabel controlId="signInID" label="아이디" className="mb-3">
+        <Form.Group className="mb-3" controlId="id">
+          <FloatingLabel controlId="id" label="아이디" className="mb-3">
             <Form.Control
               type="ID"
               placeholder="아이디"
@@ -80,11 +80,8 @@ function Signin() {
             />
           </FloatingLabel>
         </Form.Group>
-        <Form.Group className="mb-3" controlId="signInPassword">
-          <FloatingLabel
-            controlId="signInPassword"
-            label="비밀번호"
-            className="mb-3">
+        <Form.Group className="mb-3" controlId="password">
+          <FloatingLabel controlId="password" label="비밀번호" className="mb-3">
             <Form.Control
               type="password"
               placeholder="비밀번호"
