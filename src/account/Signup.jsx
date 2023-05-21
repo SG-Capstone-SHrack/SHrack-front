@@ -28,6 +28,14 @@ function Signup() {
   }, [id]);
 
   const [password, setPassword] = useState('');
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  useEffect(() => {
+    // password validation check
+    if (password === '') {
+      setIsIdValid(false);
+    }
+  }, [password]);
+
   const [passwordCheck, setPasswordCheck] = useState('');
   const [gender, setGender] = useState('');
   const [height, setHeight] = useState('');
@@ -62,7 +70,7 @@ function Signup() {
               type="ID"
               placeholder="아이디"
               onChange={e => setId(e.target.value)}
-              isInvalid={isIdValid ? false : true}
+              isInvalid={!isIdValid}
             />
             <Form.Control.Feedback type="invalid">
               아이디를 입력해주세요.{' '}
@@ -111,10 +119,10 @@ function Signup() {
         <Row>
           <Col>
             <Form.Group className="mb-3" controlId="height">
-              <FloatingLabel controlId="height" label="키" className="mb-3">
+              <FloatingLabel controlId="height" label="키(cm)" className="mb-3">
                 <Form.Control
                   type="number"
-                  placeholder="키"
+                  placeholder="키(cm)"
                   onChange={e => setHeight(e.target.value)}
                 />
               </FloatingLabel>
@@ -122,10 +130,13 @@ function Signup() {
           </Col>
           <Col>
             <Form.Group className="mb-3" controlId="weight">
-              <FloatingLabel controlId="weight" label="몸무게" className="mb-3">
+              <FloatingLabel
+                controlId="weight"
+                label="몸무게(kg)"
+                className="mb-3">
                 <Form.Control
                   type="number"
-                  placeholder="몸무게"
+                  placeholder="몸무게(kg)"
                   onChange={e => setWeight(e.target.value)}
                 />
               </FloatingLabel>
