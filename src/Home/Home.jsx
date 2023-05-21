@@ -2,56 +2,31 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Card, Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, Card } from 'react-bootstrap';
 import axios from 'axios';
 
 const HomePage = () => {
   const { id } = useParams();
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date()); // 오늘 날짜가 default값으로 되게끔 변경
   const [exerciseRecords, setExerciseRecords] = useState([]);
-  const [password, setPassword] = useState('');  //패스워드 받을 예정
+  const [password, setPassword] = useState(''); //비밀번호 받아오는 걸로
   const [isAlert, setIsAlert] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-    setExerciseRecords([]);
-    if (date) {
-      fetchExerciseRecords(date);
-    }
   };
 
-  const handleFetchData = () => {
-    //임시 데이터
-    const fetchedRecords = [
-      {
-        exerciseName: '운동 1',
-        numberOfSets: 3,
-        totalSets: 5,
-        weight: 50,
-        totalTime: '00:30:00',
-      },
-      {
-        exerciseName: '운동 2',
-        numberOfSets: 4,
-        totalSets: 6,
-        weight: 40,
-        totalTime: '00:25:00',
-      },
-    ];
-    setExerciseRecords(fetchedRecords);
-  };
-
-  const fetchExerciseRecords = (date) => {//date를 받아서 서버에 전송 => 추후 추가 예정
+  const fetchExerciseRecords = () => {
+    // 서버에 선택한 날짜 정보 보내기 => 추후 수정하기
     const authToken = localStorage.getItem('auth');
-    if (authToken) {
+    if (authToken && selectedDate) {
       const headers = {
         'Content-Type': 'application/json',
         Authorization: authToken,
       };
-
-      axios
-        .get(`http://your-api-endpoint/exercise-records?date=${date}`, { headers })
+      axios // 서버에서 받아온 데이터를 exerciseRecords에 저장
+        .get(`http://your-api-endpoint/exercise-records?date=${selectedDate}`, { headers })
         .then((response) => {
           const fetchedRecords = response.data;
           setExerciseRecords(fetchedRecords);
@@ -63,30 +38,23 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    handleFetchData();
+    fetchExerciseRecords();
+  }, [selectedDate]);
 
-    const authToken = localStorage.getItem('auth');
-    if (authToken && selectedDate) {
-      fetchExerciseRecords(selectedDate);
-    }
-  }, [id]);
-
-  const handleLogin = (e) => { // id와 password를 받아서 서버에 전송 => 추후 추가 예정
+  const handleLogin = (e) => {
+    // 아이디와 비밀번호 서버에 전달 => 추후 수정
     e.preventDefault();
     if (!id || !password) {
       setIsAlert(true);
       return;
     }
-
     const data = {
       id: id,
       password: password,
     };
-
     const headers = {
       'Content-Type': 'application/json',
     };
-
     setIsLoading(true);
     axios
       .post('http://your-api-endpoint/login', JSON.stringify(data), { headers })
@@ -102,8 +70,8 @@ const HomePage = () => {
         setIsLoading(false);
       });
   };
-  //상단 메뉴바
-  return (
+
+  return (  //상단 바(마이페이지, 로그아웃, 기타 메뉴) 
     <div>
       <Navbar bg="primary" variant="dark" expand="lg">
         <Navbar.Brand>SHrack</Navbar.Brand>
@@ -116,17 +84,17 @@ const HomePage = () => {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-
+      
       <div
         style={{
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
           height: '100vh',
-        }}
+        }}//데이트피커 및 운동기록 카드
       >
-        <Card style={{ width: '500px' }}>
-          <Card.Body>
+        <div style={{ width: '500px' }}>
+          <Card.Body> 
             <Card.Title style={{ marginBottom: '20px' }}>
               Welcome to SHrack! Hello User {id}
             </Card.Title>
@@ -140,39 +108,72 @@ const HomePage = () => {
               <div>
                 <h6>Exercise information on {selectedDate.toLocaleDateString()}</h6>
 
-                {exerciseRecords.map((record, index) => (
-                  <Card key={index} style={{ marginBottom: '10px' }}>
+                {exerciseRecords.length > 0 ? (
+                  exerciseRecords.map((record, index) => (
+                    <Card key={index} style={{ marginBottom: '10px' }}>
+                      <Card.Body>
+                        <Card.Title>{record.exerciseName}</Card.Title>
+                        <div style={{ display: 'flex', marginTop: '10px' }}>
+                          {[...Array(record.totalSets)].map((_, i) => (
+                            <div
+                              key={i}
+                              style={{
+                                backgroundColor: i < record.numberOfSets ? 'blue' : 'gray',
+                                width: '20px',
+                                height: '10px',
+                                marginRight: '5px',
+                              }}
+                            />
+                          ))}
+                        </div>
+                        <Card.Text>
+                          Number of Sets: {record.numberOfSets} / {record.totalSets}
+                        </Card.Text>
+                        <Card.Text>Weight: {record.weight} kg</Card.Text>
+                        <Card.Text>Total Time: {record.totalTime}</Card.Text>
+                      </Card.Body>
+                    </Card>
+                  ))
+                ) : (
+                  <Card style={{ marginBottom: '10px' }}>
                     <Card.Body>
-                      <Card.Title>{record.exerciseName}</Card.Title>
+                      <Card.Title>Example Exercise Name</Card.Title>
                       <div style={{ display: 'flex', marginTop: '10px' }}>
-                        {[...Array(record.totalSets)].map((_, i) => (
-                          <div
-                            key={i}
-                            style={{
-                              backgroundColor: i < record.numberOfSets ? 'blue' : 'gray',
-                              width: '20px',
-                              height: '10px',
-                              marginRight: '5px',
-                            }}
-                          />
-                        ))}
+                        <div
+                          style={{
+                            backgroundColor: 'blue',
+                            width: '20px',
+                            height: '10px',
+                            marginRight: '5px',
+                          }}
+                        />
+                        <div
+                          style={{
+                            backgroundColor: 'blue',
+                            width: '20px',
+                            height: '10px',
+                            marginRight: '5px',
+                          }}
+                        />
+                        <div
+                          style={{
+                            backgroundColor: 'gray',
+                            width: '20px',
+                            height: '10px',
+                            marginRight: '5px',
+                          }}
+                        />
                       </div>
-                      <Card.Text>
-                        Number of Sets: {record.numberOfSets} / {record.totalSets}
-                      </Card.Text>
-                      <Card.Text>Weight: {record.weight} kg</Card.Text>
-                      <Card.Text>Total Time: {record.totalTime}</Card.Text>
+                      <Card.Text>Number of Sets: 2 / 3</Card.Text>
+                      <Card.Text>Weight: 50 kg</Card.Text>
+                      <Card.Text>Total Time: 00:30:00</Card.Text>
                     </Card.Body>
                   </Card>
-                ))}
-
-                {exerciseRecords.length === 0 && (
-                  <button onClick={handleFetchData}>Get Exercise Data</button>
                 )}
               </div>
             )}
           </Card.Body>
-        </Card>
+        </div>
       </div>
     </div>
   );
