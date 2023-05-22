@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Navbar, Nav, Card } from 'react-bootstrap';
+import { Navbar, Nav, Card, Button } from 'react-bootstrap';
 import axios from 'axios';
 
 const HomePage = () => {
@@ -13,7 +13,7 @@ const HomePage = () => {
   const [isAlert, setIsAlert] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleDateChange = (date) => {
+  const handleDateChange = date => {
     setSelectedDate(date);
   };
 
@@ -26,12 +26,14 @@ const HomePage = () => {
         Authorization: authToken,
       };
       axios // 서버에서 받아온 데이터를 exerciseRecords에 저장
-        .get(`http://your-api-endpoint/exercise-records?date=${selectedDate}`, { headers })
-        .then((response) => {
+        .get(`http://your-api-endpoint/exercise-records?date=${selectedDate}`, {
+          headers,
+        })
+        .then(response => {
           const fetchedRecords = response.data;
           setExerciseRecords(fetchedRecords);
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     }
@@ -41,7 +43,7 @@ const HomePage = () => {
     fetchExerciseRecords();
   }, [selectedDate]);
 
-  const handleLogin = (e) => {
+  const handleLogin = e => {
     // 아이디와 비밀번호 서버에 전달 => 추후 수정
     e.preventDefault();
     if (!id || !password) {
@@ -58,11 +60,11 @@ const HomePage = () => {
     setIsLoading(true);
     axios
       .post('http://your-api-endpoint/login', JSON.stringify(data), { headers })
-      .then((res) => {
+      .then(res => {
         localStorage.setItem('auth', res.data.key);
         window.location.href = '/';
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
         setIsAlert(true);
       })
@@ -70,8 +72,13 @@ const HomePage = () => {
         setIsLoading(false);
       });
   };
-
-  return (  //상단 바(마이페이지, 로그아웃, 기타 메뉴) 
+  const handleLogout = () => {
+    // 로그아웃
+    localStorage.removeItem('auth');
+    window.location.href = '/';
+  };
+  return (
+    //상단 바(마이페이지, 로그아웃, 기타 메뉴)
     <div>
       <Navbar bg="primary" variant="dark" expand="lg">
         <Navbar.Brand>SHrack</Navbar.Brand>
@@ -79,22 +86,22 @@ const HomePage = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link href="#">MyPage</Nav.Link>
-            <Nav.Link href="#">Logout</Nav.Link>
+            <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
             <Nav.Link href="#">Other Menu</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      
+
       <div
         style={{
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
           height: '100vh',
-        }}//데이트피커 및 운동기록 카드
+        }} //데이트피커 및 운동기록 카드
       >
         <div style={{ width: '500px' }}>
-          <Card.Body> 
+          <Card.Body>
             <Card.Title style={{ marginBottom: '20px' }}>
               Welcome to SHrack! Hello User {id}
             </Card.Title>
@@ -106,7 +113,9 @@ const HomePage = () => {
 
             {selectedDate && (
               <div>
-                <h6>Exercise information on {selectedDate.toLocaleDateString()}</h6>
+                <h6>
+                  Exercise information on {selectedDate.toLocaleDateString()}
+                </h6>
 
                 {exerciseRecords.length > 0 ? (
                   exerciseRecords.map((record, index) => (
@@ -118,7 +127,8 @@ const HomePage = () => {
                             <div
                               key={i}
                               style={{
-                                backgroundColor: i < record.numberOfSets ? 'blue' : 'gray',
+                                backgroundColor:
+                                  i < record.numberOfSets ? 'blue' : 'gray',
                                 width: '20px',
                                 height: '10px',
                                 marginRight: '5px',
@@ -127,7 +137,8 @@ const HomePage = () => {
                           ))}
                         </div>
                         <Card.Text>
-                          Number of Sets: {record.numberOfSets} / {record.totalSets}
+                          Number of Sets: {record.numberOfSets} /{' '}
+                          {record.totalSets}
                         </Card.Text>
                         <Card.Text>Weight: {record.weight} kg</Card.Text>
                         <Card.Text>Total Time: {record.totalTime}</Card.Text>
