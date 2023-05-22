@@ -54,8 +54,28 @@ function Signup() {
       true
     ) {
       e.preventDefault();
-      return;
+      axios
+        .post('http://13.209.109.234:5000/signup', {
+          //json 형식으로 서버에 전송
+          id: id,
+          password: password,
+          name: name,
+          gender: gender,
+          birthdate: '2000-01-10',
+          height: height,
+          weight: weight,
+        })
+        .then(res => {
+          console.log(res);
+          //window.location.href = '/';
+          //Todo:  회원가입 완료 메세지를 보여주는 부분 추가
+        })
+        .catch(err => {
+          console.log(err);
+          console.log('hihi error입니다'); //testp
+        });
     }
+    return;
   };
   return (
     <Container>
@@ -155,8 +175,8 @@ function Signup() {
                       type="radio"
                       label="남"
                       name="gender-male"
-                      value="남"
-                      checked={gender === '남'}
+                      value="M"
+                      checked={gender === 'M'}
                       onChange={e => setGender(e.target.value)}
                     />
                     <Form.Check
@@ -164,8 +184,8 @@ function Signup() {
                       type="radio"
                       label="여"
                       name="gender-female"
-                      value="여"
-                      checked={gender === '여'}
+                      value="F"
+                      checked={gender === 'F'}
                       onChange={e => setGender(e.target.value)}
                     />
                   </div>
