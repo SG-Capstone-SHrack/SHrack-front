@@ -13,6 +13,7 @@ import {
   Navbar,
 } from 'react-bootstrap';
 import Loader from '../components/Loader';
+import { set } from 'react-hook-form';
 
 function Signup() {
   // 회원가입 정보
@@ -60,10 +61,37 @@ function Signup() {
     }
   }, [name]);
 
-  const [gender, setGender] = useState('');
+  const [gender, setGender] = useState('M');
+
   const [height, setHeight] = useState('');
+  const [isHeightValid, setIsHeightValid] = useState(false);
+  useEffect(() => {
+    if (height === '') {
+      setIsHeightValid(false);
+    } else {
+      setIsHeightValid(true);
+    }
+  }, [height]);
+
   const [weight, setWeight] = useState('');
+  const [isWeightValid, setIsWeightValid] = useState(false);
+  useEffect(() => {
+    if (weight === '') {
+      setIsWeightValid(false);
+    } else {
+      setIsWeightValid(true);
+    }
+  }, [weight]);
+
   const [birth, setBirth] = useState('');
+  const [isBirthValid, setIsBirthValid] = useState(false);
+  useEffect(() => {
+    if (birth === '') {
+      setIsBirthValid(false);
+    } else {
+      setIsBirthValid(true);
+    }
+  }, [birth]);
 
   useEffect(() => {
     console.log(gender, birth);
@@ -73,7 +101,14 @@ function Signup() {
   const onSubmit = e => {
     if (
       // validation check
-      true
+      // check every validation states are true
+      isIdValid &&
+      isPasswordValid &&
+      isPasswordCheckValid &&
+      isNameValid &&
+      isHeightValid &&
+      isWeightValid &&
+      isBirthValid
     ) {
       e.preventDefault();
       axios
@@ -96,6 +131,9 @@ function Signup() {
           console.log(err);
           console.log('hihi error입니다'); //testp
         });
+    } else {
+      e.preventDefault();
+      console.log('입력 정보 부족');
     }
     return;
   };
@@ -178,7 +216,11 @@ function Signup() {
                   type="number"
                   placeholder="키(cm)"
                   onChange={e => setHeight(e.target.value)}
+                  isInvalid={!isHeightValid}
                 />
+                <Form.Control.Feedback type="invalid">
+                  키를 입력해주세요.{' '}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
@@ -192,7 +234,11 @@ function Signup() {
                   type="number"
                   placeholder="몸무게(kg)"
                   onChange={e => setWeight(e.target.value)}
+                  isInvalid={!isWeightValid}
                 />
+                <Form.Control.Feedback type="invalid">
+                  몸무게를 입력해주세요.{' '}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
@@ -236,7 +282,11 @@ function Signup() {
                     type="date"
                     value={birth}
                     onChange={e => setBirth(e.target.value)}
+                    isInvalid={!isBirthValid}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    생년월일을 선택해주세요.{' '}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Card.Body>
             </Card>
