@@ -53,8 +53,8 @@ function Signin() {
       .then(res => {
         e.preventDefault(); //testp
         console.log(res);
-        // 이 부분 수정해야함
         localStorage.setItem('auth', res.data.key);
+        //Todo : 받는거 잘 분석해서 auth에 아이디 넣기
         //window.location.href = '/'; //testp
       })
       .catch(err => {
