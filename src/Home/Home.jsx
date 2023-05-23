@@ -1,20 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';  // commit message : create
+import { useParams, useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Navbar, Nav, Card } from 'react-bootstrap';
+import { Navbar, Nav, Card, Button } from 'react-bootstrap';
 import axios from 'axios';
 
-const HomePage = () => {
+const HomePage = () => { 
   const { id } = useParams();
+  const history = useNavigate();
   const [selectedDate, setSelectedDate] = useState(new Date()); // 오늘 날짜가 default값으로 되게끔 변경
-  const [exerciseRecords, setExerciseRecords] = useState([]);
-  const [password, setPassword] = useState(''); //비밀번호 받아오는 걸로
+  const [exerciseRecords, setExerciseRecords] = useState([]); //비밀번호 받아오는 걸로
+  const [password, setPassword] = useState('');
   const [isAlert, setIsAlert] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [exerciseType, setExerciseType] = useState('');
+  const [exerciseGoal, setExerciseGoal] = useState('');
 
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    setSelectedDate(date); // 날짜를 선택 시 해당 날짜로 변경
   };
 
   const fetchExerciseRecords = () => {
@@ -25,6 +28,7 @@ const HomePage = () => {
         'Content-Type': 'application/json',
         Authorization: authToken,
       };
+
       axios // 서버에서 받아온 데이터를 exerciseRecords에 저장
         .get(`http://your-api-endpoint/exercise-records?date=${selectedDate}`, { headers })
         .then((response) => {
@@ -41,8 +45,7 @@ const HomePage = () => {
     fetchExerciseRecords();
   }, [selectedDate]);
 
-  const handleLogin = (e) => {
-    // 아이디와 비밀번호 서버에 전달 => 추후 수정
+  const handleLogin = (e) => {  // 아이디와 비밀번호 서버에 전달 => 추후 수정
     e.preventDefault();
     if (!id || !password) {
       setIsAlert(true);
@@ -71,7 +74,15 @@ const HomePage = () => {
       });
   };
 
-  return (  //상단 바(마이페이지, 로그아웃, 기타 메뉴) 
+  const handleAddExercise = () => {
+    const exerciseData = {
+      exerciseType: exerciseType,
+      exerciseGoal: exerciseGoal,
+    };
+    history.push(`/next-page?exerciseType=${exerciseType}&exerciseGoal=${exerciseGoal}`);
+  };
+
+  return (
     <div>
       <Navbar bg="primary" variant="dark" expand="lg">
         <Navbar.Brand>SHrack</Navbar.Brand>
@@ -84,25 +95,19 @@ const HomePage = () => {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      
+
       <div
         style={{
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
           height: '100vh',
-        }}//데이트피커 및 운동기록 카드
+        }}
       >
         <div style={{ width: '500px' }}>
-          <Card.Body> 
-            <Card.Title style={{ marginBottom: '20px' }}>
-              Welcome to SHrack! Hello User {id}
-            </Card.Title>
-            <DatePicker
-              selected={selectedDate}
-              onChange={handleDateChange}
-              style={{ marginBottom: '20px' }}
-            />
+          <Card.Body>
+            <Card.Title style={{ marginBottom: '20px' }}>Welcome to SHrack! Hello User {id}</Card.Title>
+            <DatePicker selected={selectedDate} onChange={handleDateChange} style={{ marginBottom: '20px' }} />
 
             {selectedDate && (
               <div>
@@ -173,6 +178,27 @@ const HomePage = () => {
               </div>
             )}
           </Card.Body>
+          <Button
+            variant="primary"
+            style={{
+              position: 'fixed',
+              bottom: '20px',
+              right: '20px',
+              borderRadius: '50%',
+              width: '50px',
+              height: '50px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              fontSize: '24px',
+            }}
+            onClick={() => {
+              setExerciseType('');
+              setExerciseGoal('');
+            }}
+          >
+            &#10003;
+          </Button>
         </div>
       </div>
     </div>
