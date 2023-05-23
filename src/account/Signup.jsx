@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
 import {
   Button,
   Form,
@@ -13,6 +12,7 @@ import {
   Col,
   Navbar,
 } from 'react-bootstrap';
+import Loader from '../components/Loader';
 
 function Signup() {
   // 회원가입 정보
@@ -32,16 +32,38 @@ function Signup() {
   useEffect(() => {
     // password validation check
     if (password === '') {
-      setIsIdValid(false);
+      setIsPasswordValid(false);
+    } else {
+      setIsPasswordValid(true);
     }
   }, [password]);
 
   const [passwordCheck, setPasswordCheck] = useState('');
+  const [isPasswordCheckValid, setIsPasswordCheckValid] = useState(false);
+  useEffect(() => {
+    // passwordCheck validation check
+    if (passwordCheck !== password) {
+      setIsPasswordCheckValid(false);
+    } else {
+      setIsPasswordCheckValid(true);
+    }
+  }, [passwordCheck, password]);
+
+  const [name, setName] = useState('');
+  const [isNameValid, setIsNameValid] = useState(false);
+  useEffect(() => {
+    // name validation check
+    if (name === '') {
+      setIsNameValid(false);
+    } else {
+      setIsNameValid(true);
+    }
+  }, [name]);
+
   const [gender, setGender] = useState('');
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
   const [birth, setBirth] = useState('');
-  const [name, setName] = useState('');
 
   useEffect(() => {
     console.log(gender, birth);
@@ -108,7 +130,11 @@ function Signup() {
                   type="password"
                   placeholder="비밀번호"
                   onChange={e => setPassword(e.target.value)}
+                  isInvalid={!isPasswordValid}
                 />
+                <Form.Control.Feedback type="invalid">
+                  비밀번호를 입력해주세요.{' '}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
@@ -121,8 +147,12 @@ function Signup() {
                 <Form.Control
                   type="password"
                   placeholder="비밀번호 확인"
-                  onChange={e => setPassword(e.target.value)}
+                  onChange={e => setPasswordCheck(e.target.value)}
+                  isInvalid={!isPasswordCheckValid}
                 />
+                <Form.Control.Feedback type="invalid">
+                  비밀번호가 일치하지 않습니다.{' '}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
@@ -133,7 +163,11 @@ function Signup() {
               type="name"
               placeholder="이름"
               onChange={e => setName(e.target.value)}
+              isInvalid={!isNameValid}
             />
+            <Form.Control.Feedback type="invalid">
+              이름을 입력해주세요.{' '}
+            </Form.Control.Feedback>
           </FloatingLabel>
         </Form.Group>
         <Row>
