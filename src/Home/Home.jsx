@@ -176,8 +176,8 @@ const HomePage = () => {
                 )}
               </div>
             )}
-          </Card.Body>
-          <Button
+          </Card.Body>  
+          <Button // 운동 추가 버튼(플로팅 버튼)
             variant="primary"
             style={{
               position: 'fixed',
