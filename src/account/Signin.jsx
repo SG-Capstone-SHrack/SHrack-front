@@ -47,14 +47,15 @@ function Signin() {
     // 서버에 전송
     setIsLoading(true);
     axios
-      .post('http://13.125.207.72:5000/login', JSON.stringify(data), {
+      .post('http://13.209.109.234:5000/login', JSON.stringify(data), {
         headers,
       })
       .then(res => {
+        e.preventDefault(); //testp
         console.log(res);
-        // 이 부분 수정해야함
         localStorage.setItem('auth', res.data.key);
-        window.location.href = '/';
+        //Todo : 받는거 잘 분석해서 auth에 아이디 넣기
+        //window.location.href = '/'; //testp
       })
       .catch(err => {
         console.log(err);

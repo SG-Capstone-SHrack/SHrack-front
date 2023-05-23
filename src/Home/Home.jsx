@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';  // commit message : create
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Navbar, Nav, Card, Button } from 'react-bootstrap';
 import axios from 'axios';
 
-const HomePage = () => { 
+const HomePage = () => {
   const { id } = useParams();
   const history = useNavigate();
   const [selectedDate, setSelectedDate] = useState(new Date()); // 오늘 날짜가 default값으로 되게끔 변경
@@ -17,19 +17,19 @@ const HomePage = () => {
   const [exerciseGoal, setExerciseGoal] = useState('');
 
   const handleDateChange = (date) => {
-    setSelectedDate(date); // 날짜를 선택 시 해당 날짜로 변경
+    setSelectedDate(date);
   };
 
   const fetchExerciseRecords = () => {
-    // 서버에 선택한 날짜 정보 보내기 => 추후 수정하기
+     // 서버에 선택한 날짜 정보 보내기 => 추후 수정하기
     const authToken = localStorage.getItem('auth');
     if (authToken && selectedDate) {
       const headers = {
         'Content-Type': 'application/json',
         Authorization: authToken,
       };
-
-      axios // 서버에서 받아온 데이터를 exerciseRecords에 저장
+ 
+      axios  // 서버에서 받아온 데이터를 exerciseRecords에 저장
         .get(`http://your-api-endpoint/exercise-records?date=${selectedDate}`, { headers })
         .then((response) => {
           const fetchedRecords = response.data;
@@ -44,7 +44,6 @@ const HomePage = () => {
   useEffect(() => {
     fetchExerciseRecords();
   }, [selectedDate]);
-
   const handleLogin = (e) => {  // 아이디와 비밀번호 서버에 전달 => 추후 수정
     e.preventDefault();
     if (!id || !password) {
@@ -55,6 +54,7 @@ const HomePage = () => {
       id: id,
       password: password,
     };
+
     const headers = {
       'Content-Type': 'application/json',
     };
@@ -73,7 +73,6 @@ const HomePage = () => {
         setIsLoading(false);
       });
   };
-
   const handleAddExercise = () => {
     const exerciseData = {
       exerciseType: exerciseType,
@@ -81,8 +80,8 @@ const HomePage = () => {
     };
     history.push(`/next-page?exerciseType=${exerciseType}&exerciseGoal=${exerciseGoal}`);
   };
-
-  return (
+ 
+  return ( //상단 바(마이페이지, 로그아웃, 기타 메뉴) 
     <div>
       <Navbar bg="primary" variant="dark" expand="lg">
         <Navbar.Brand>SHrack</Navbar.Brand>
@@ -204,5 +203,4 @@ const HomePage = () => {
     </div>
   );
 };
-
 export default HomePage;

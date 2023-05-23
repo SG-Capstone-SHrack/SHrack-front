@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
 import {
   Button,
   Form,
@@ -13,6 +12,8 @@ import {
   Col,
   Navbar,
 } from 'react-bootstrap';
+import Loader from '../components/Loader';
+import { set } from 'react-hook-form';
 
 function Signup() {
   // 회원가입 정보
@@ -32,16 +33,65 @@ function Signup() {
   useEffect(() => {
     // password validation check
     if (password === '') {
-      setIsIdValid(false);
+      setIsPasswordValid(false);
+    } else {
+      setIsPasswordValid(true);
     }
   }, [password]);
 
   const [passwordCheck, setPasswordCheck] = useState('');
-  const [gender, setGender] = useState('');
-  const [height, setHeight] = useState('');
-  const [weight, setWeight] = useState('');
-  const [birth, setBirth] = useState('');
+  const [isPasswordCheckValid, setIsPasswordCheckValid] = useState(false);
+  useEffect(() => {
+    // passwordCheck validation check
+    if (passwordCheck !== password) {
+      setIsPasswordCheckValid(false);
+    } else {
+      setIsPasswordCheckValid(true);
+    }
+  }, [passwordCheck, password]);
+
   const [name, setName] = useState('');
+  const [isNameValid, setIsNameValid] = useState(false);
+  useEffect(() => {
+    // name validation check
+    if (name === '') {
+      setIsNameValid(false);
+    } else {
+      setIsNameValid(true);
+    }
+  }, [name]);
+
+  const [gender, setGender] = useState('M');
+
+  const [height, setHeight] = useState('');
+  const [isHeightValid, setIsHeightValid] = useState(false);
+  useEffect(() => {
+    if (height === '') {
+      setIsHeightValid(false);
+    } else {
+      setIsHeightValid(true);
+    }
+  }, [height]);
+
+  const [weight, setWeight] = useState('');
+  const [isWeightValid, setIsWeightValid] = useState(false);
+  useEffect(() => {
+    if (weight === '') {
+      setIsWeightValid(false);
+    } else {
+      setIsWeightValid(true);
+    }
+  }, [weight]);
+
+  const [birth, setBirth] = useState('');
+  const [isBirthValid, setIsBirthValid] = useState(false);
+  useEffect(() => {
+    if (birth === '') {
+      setIsBirthValid(false);
+    } else {
+      setIsBirthValid(true);
+    }
+  }, [birth]);
 
   useEffect(() => {
     console.log(gender, birth);
@@ -51,11 +101,41 @@ function Signup() {
   const onSubmit = e => {
     if (
       // validation check
-      true
+      // check every validation states are true
+      isIdValid &&
+      isPasswordValid &&
+      isPasswordCheckValid &&
+      isNameValid &&
+      isHeightValid &&
+      isWeightValid &&
+      isBirthValid
     ) {
       e.preventDefault();
-      return;
+      axios
+        .post('http://13.209.109.234:5000/signup', {
+          //json 형식으로 서버에 전송
+          id: id,
+          password: password,
+          name: name,
+          gender: gender,
+          birthdate: '2000-01-10',
+          height: height,
+          weight: weight,
+        })
+        .then(res => {
+          console.log(res);
+          //window.location.href = '/';
+          //Todo:  회원가입 완료 메세지를 보여주는 부분 추가
+        })
+        .catch(err => {
+          console.log(err);
+          console.log('hihi error입니다'); //testp
+        });
+    } else {
+      e.preventDefault();
+      console.log('입력 정보 부족');
     }
+    return;
   };
   return (
     <Container>
@@ -88,7 +168,11 @@ function Signup() {
                   type="password"
                   placeholder="비밀번호"
                   onChange={e => setPassword(e.target.value)}
+                  isInvalid={!isPasswordValid}
                 />
+                <Form.Control.Feedback type="invalid">
+                  비밀번호를 입력해주세요.{' '}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
@@ -101,8 +185,12 @@ function Signup() {
                 <Form.Control
                   type="password"
                   placeholder="비밀번호 확인"
-                  onChange={e => setPassword(e.target.value)}
+                  onChange={e => setPasswordCheck(e.target.value)}
+                  isInvalid={!isPasswordCheckValid}
                 />
+                <Form.Control.Feedback type="invalid">
+                  비밀번호가 일치하지 않습니다.{' '}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
@@ -113,7 +201,11 @@ function Signup() {
               type="name"
               placeholder="이름"
               onChange={e => setName(e.target.value)}
+              isInvalid={!isNameValid}
             />
+            <Form.Control.Feedback type="invalid">
+              이름을 입력해주세요.{' '}
+            </Form.Control.Feedback>
           </FloatingLabel>
         </Form.Group>
         <Row>
@@ -124,7 +216,11 @@ function Signup() {
                   type="number"
                   placeholder="키(cm)"
                   onChange={e => setHeight(e.target.value)}
+                  isInvalid={!isHeightValid}
                 />
+                <Form.Control.Feedback type="invalid">
+                  키를 입력해주세요.{' '}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
@@ -138,7 +234,11 @@ function Signup() {
                   type="number"
                   placeholder="몸무게(kg)"
                   onChange={e => setWeight(e.target.value)}
+                  isInvalid={!isWeightValid}
                 />
+                <Form.Control.Feedback type="invalid">
+                  몸무게를 입력해주세요.{' '}
+                </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
           </Col>
@@ -155,8 +255,8 @@ function Signup() {
                       type="radio"
                       label="남"
                       name="gender-male"
-                      value="남"
-                      checked={gender === '남'}
+                      value="M"
+                      checked={gender === 'M'}
                       onChange={e => setGender(e.target.value)}
                     />
                     <Form.Check
@@ -164,8 +264,8 @@ function Signup() {
                       type="radio"
                       label="여"
                       name="gender-female"
-                      value="여"
-                      checked={gender === '여'}
+                      value="F"
+                      checked={gender === 'F'}
                       onChange={e => setGender(e.target.value)}
                     />
                   </div>
@@ -182,7 +282,11 @@ function Signup() {
                     type="date"
                     value={birth}
                     onChange={e => setBirth(e.target.value)}
+                    isInvalid={!isBirthValid}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    생년월일을 선택해주세요.{' '}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Card.Body>
             </Card>
