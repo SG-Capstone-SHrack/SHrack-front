@@ -10,7 +10,7 @@ import {
   Modal,
 } from 'react-bootstrap';
 
-function ExerciseStartModal(isModalShow, setModalShow) {
+function ExerciseStartModal({isModalShow, setModalShow}) {
   const [exerciseType, setExerciseType] = useState('');
   const [exerciseGoal, setExerciseGoal] = useState('');
   const [goalType, setGoalType] = useState('');
