@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+
 import {
   Button,
   Form,
@@ -11,6 +11,9 @@ import {
 } from 'react-bootstrap';
 
 function ExerciseStartModal(isModalShow, setModalShow) {
+  const [exerciseType, setExerciseType] = useState('');
+  const [exerciseGoal, setExerciseGoal] = useState('');
+  const [goalType, setGoalType] = useState('');
   return (
     <div>
       <Modal
