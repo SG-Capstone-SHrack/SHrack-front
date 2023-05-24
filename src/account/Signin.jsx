@@ -19,6 +19,7 @@ function Signin() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [isAlert, setIsAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     console.log(id, password);
@@ -30,6 +31,7 @@ function Signin() {
     if (!id || !password) {
       e.preventDefault();
       setIsAlert(true);
+      setAlertMessage('아이디와 비밀번호를 입력해주세요.');
       return;
     }
 
@@ -43,6 +45,7 @@ function Signin() {
       'Content-Type': 'application/json',
     };
     e.preventDefault();
+
     //console.log(data);
     // 서버에 전송
     setIsLoading(true);

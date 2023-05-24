@@ -16,26 +16,28 @@ const HomePage = () => {
   const [exerciseType, setExerciseType] = useState('');
   const [exerciseGoal, setExerciseGoal] = useState('');
 
-  const handleDateChange = (date) => {
+  const handleDateChange = date => {
     setSelectedDate(date);
   };
 
   const fetchExerciseRecords = () => {
-     // 서버에 선택한 날짜 정보 보내기 => 추후 수정하기
+    // 서버에 선택한 날짜 정보 보내기 => 추후 수정하기
     const authToken = localStorage.getItem('auth');
     if (authToken && selectedDate) {
       const headers = {
         'Content-Type': 'application/json',
         Authorization: authToken,
       };
- 
-      axios  // 서버에서 받아온 데이터를 exerciseRecords에 저장
-        .get(`http://your-api-endpoint/exercise-records?date=${selectedDate}`, { headers })
-        .then((response) => {
+
+      axios // 서버에서 받아온 데이터를 exerciseRecords에 저장
+        .get(`http://your-api-endpoint/exercise-records?date=${selectedDate}`, {
+          headers,
+        })
+        .then(response => {
           const fetchedRecords = response.data;
           setExerciseRecords(fetchedRecords);
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     }
@@ -44,7 +46,8 @@ const HomePage = () => {
   useEffect(() => {
     fetchExerciseRecords();
   }, [selectedDate]);
-  const handleLogin = (e) => {  // 아이디와 비밀번호 서버에 전달 => 추후 수정
+  const handleLogin = e => {
+    // 아이디와 비밀번호 서버에 전달 => 추후 수정
     e.preventDefault();
     if (!id || !password) {
       setIsAlert(true);
@@ -61,11 +64,11 @@ const HomePage = () => {
     setIsLoading(true);
     axios
       .post('http://your-api-endpoint/login', JSON.stringify(data), { headers })
-      .then((res) => {
+      .then(res => {
         localStorage.setItem('auth', res.data.key);
         window.location.href = '/';
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
         setIsAlert(true);
       })
@@ -78,10 +81,13 @@ const HomePage = () => {
       exerciseType: exerciseType,
       exerciseGoal: exerciseGoal,
     };
-    history.push(`/next-page?exerciseType=${exerciseType}&exerciseGoal=${exerciseGoal}`);
+    history.push(
+      `/next-page?exerciseType=${exerciseType}&exerciseGoal=${exerciseGoal}`,
+    );
   };
- 
-  return ( //상단 바(마이페이지, 로그아웃, 기타 메뉴) 
+
+  return (
+    //상단 바(마이페이지, 로그아웃, 기타 메뉴)
     <div>
       <Navbar bg="primary" variant="dark" expand="lg">
         <Navbar.Brand>SHrack</Navbar.Brand>
@@ -101,16 +107,23 @@ const HomePage = () => {
           justifyContent: 'center',
           alignItems: 'center',
           height: '100vh',
-        }}
-      >
+        }}>
         <div style={{ width: '500px' }}>
           <Card.Body>
-            <Card.Title style={{ marginBottom: '20px' }}>Welcome to SHrack! Hello User {id}</Card.Title>
-            <DatePicker selected={selectedDate} onChange={handleDateChange} style={{ marginBottom: '20px' }} />
+            <Card.Title style={{ marginBottom: '20px' }}>
+              Welcome to SHrack! Hello User {id}
+            </Card.Title>
+            <DatePicker
+              selected={selectedDate}
+              onChange={handleDateChange}
+              style={{ marginBottom: '20px' }}
+            />
 
             {selectedDate && (
               <div>
-                <h6>Exercise information on {selectedDate.toLocaleDateString()}</h6>
+                <h6>
+                  Exercise information on {selectedDate.toLocaleDateString()}
+                </h6>
 
                 {exerciseRecords.length > 0 ? (
                   exerciseRecords.map((record, index) => (
@@ -122,7 +135,8 @@ const HomePage = () => {
                             <div
                               key={i}
                               style={{
-                                backgroundColor: i < record.numberOfSets ? 'blue' : 'gray',
+                                backgroundColor:
+                                  i < record.numberOfSets ? 'blue' : 'gray',
                                 width: '20px',
                                 height: '10px',
                                 marginRight: '5px',
@@ -131,7 +145,8 @@ const HomePage = () => {
                           ))}
                         </div>
                         <Card.Text>
-                          Number of Sets: {record.numberOfSets} / {record.totalSets}
+                          Number of Sets: {record.numberOfSets} /{' '}
+                          {record.totalSets}
                         </Card.Text>
                         <Card.Text>Weight: {record.weight} kg</Card.Text>
                         <Card.Text>Total Time: {record.totalTime}</Card.Text>
@@ -184,8 +199,8 @@ const HomePage = () => {
               bottom: '20px',
               right: '20px',
               borderRadius: '50%',
-              width: '50px',
-              height: '50px',
+              width: '75px',
+              height: '75px',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
@@ -194,9 +209,9 @@ const HomePage = () => {
             onClick={() => {
               setExerciseType('');
               setExerciseGoal('');
-            }}
-          >
-            &#10003;
+            }}>
+            {/* &#10003; */}
+            🏋️
           </Button>
         </div>
       </div>
