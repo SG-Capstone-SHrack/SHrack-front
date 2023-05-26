@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Form, Modal } from 'react-bootstrap';
+
+import {
+  Button,
+  Form,
+  Container,
+  FloatingLabel,
+  Alert,
+  Modal,
+} from 'react-bootstrap';
 
 function ExerciseStartModal({ isModalShow, setModalShow }) {
   const [exerciseType, setExerciseType] = useState('');
