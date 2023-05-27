@@ -1,0 +1,22 @@
+{
+  "exercise": [
+    {
+      "exercise_name": "squat",
+      "date": "2023-05-27",
+      "start_time": "10:00:00",
+      "end_time": "10:30:00",
+      "exercise_time": "00:30:00",
+      "mass": 10,
+      "count": 20
+    },
+    {
+      "exercise_name": "push-up",
+      "date": "2023-05-27",
+      "start_time": "11:00:00",
+      "end_time": "11:30:00",
+      "exercise_time": "00:30:00",
+      "mass": null,
+      "count":30
+    }
+  ]
+}
