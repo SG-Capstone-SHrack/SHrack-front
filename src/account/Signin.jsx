@@ -1,6 +1,5 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import {
   Button,
@@ -16,58 +15,43 @@ import axios from 'axios';
 import Loader from '../components/Loader';
 
 function Signin() {
+  const history = useNavigate();
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [isAlert, setIsAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    console.log(id, password);
-  }, [id, password]);
 
-  // onSubmit -> Id와 Password를 받아서 서버에 전송
-  const onSubmit = e => {
-    //id가 비어있거나  password가 비어있으면 return
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
     if (!id || !password) {
-      e.preventDefault();
       setIsAlert(true);
-      setAlertMessage('아이디와 비밀번호를 입력해주세요.');
       return;
     }
 
-    //디버깅을 위해 e.preventDefault() 사용
-    //실제 서버에 전송할 때는 e.preventDefault() 삭제
-    const data = {
-      id: id,
-      password: password,
-    };
-    const headers = {
-      'Content-Type': 'application/json',
-    };
-    e.preventDefault();
-
-    //console.log(data);
-    // 서버에 전송
     setIsLoading(true);
-    axios
-      .post('http://13.209.109.234:5000/login', JSON.stringify(data), {
-        headers,
-      })
-      .then(res => {
-        e.preventDefault(); //testp
-        console.log(res);
-        localStorage.setItem('auth', res.data.key);
-        //Todo : 받는거 잘 분석해서 auth에 아이디 넣기
-        //window.location.href = '/'; //testp
-      })
-      .catch(err => {
-        console.log(err);
-        setIsAlert(true);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    try {
+      const response = await axios.post(
+        'http://13.209.109.234:5000/login',
+        JSON.stringify({ id, password }),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      const userId = response.data.id;
+      localStorage.setItem('auth', response.data.key);
+      history.push(`/home/${userId}`);
+    } catch (error) {
+      setIsAlert(true);
+      console.log('Error:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
   return (
     <Container>
       <Navbar sticky="top" bg="light" expand="lg">
@@ -113,6 +97,7 @@ function Signin() {
           </Col>
         </Row>
       </Form>
+
       {isLoading && <Loader />}
     </Container>
   );
