@@ -19,7 +19,7 @@ const HomePage = () => {
 
   const fetchExerciseRecords = async (date) => {
     try {
-      const response = await axios.get(`http://13.209.109.234:5000/exercise-logs/${id}`);
+      const response = await axios.post(`http://13.209.109.234:5000/exercise-logs/${id}`);
       setExerciseRecords(response.data.exercise);
     } catch (error) {
       console.log('Error fetching exercise records:', error);
