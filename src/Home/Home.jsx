@@ -11,68 +11,39 @@ const HomePage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [exerciseRecords, setExerciseRecords] = useState([]);
 
-  const [showModal, setShowModal] = useState(false);  
-
-  const [exerciseType, setExerciseType] = useState('');
-  const [exerciseGoal, setExerciseGoal] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-    setExerciseRecords([]);
-    if (date) {
-      fetchExerciseRecords(date); 
+  };
+
+  const fetchExerciseRecords = async (date) => {
+    try {
+      const response = await axios.get(`http://13.209.109.234:5000/exercise-logs/${id}`);
+      setExerciseRecords(response.data.exercise);
+    } catch (error) {
+      console.log('Error fetching exercise records:', error);
+      setExerciseRecords([]);
     }
   };
 
-  const handleFetchData = () => { //임시 데이터 => 추후 수정 예정
-    const fetchedRecords = [
-      {
-        exerciseName: 'Exercise 1',
-        numberOfSets: 3,
-        totalSets: 5,
-        weight: 50,
-        totalTime: '00:30:00',
-      },
-      {
-        exerciseName: 'Exercise 2',
-        numberOfSets: 4,
-        totalSets: 6,
-        weight: 40,
-        totalTime: '00:25:00',
-      },
-    ];
-    setExerciseRecords(fetchedRecords);
-  };
-
-  const fetchExerciseRecords = (date) => { //임시 데이터 => 추후 수정 예정
-    const fetchedRecords = [
-      {
-        exerciseName: 'Exercise 1',
-        numberOfSets: 3,
-        totalSets: 5,
-        weight: 50,
-        totalTime: '00:30:00',
-      },
-    ];
-    setExerciseRecords(fetchedRecords);
-  };
-
   useEffect(() => {
-    handleFetchData();
     fetchExerciseRecords(selectedDate);
   }, [selectedDate]);
 
-  const handleAddExercise = () => { //모달창 띄우기, 닫기 함수
+  const handleAddExercise = () => {
     setShowModal(true);
   };
+
   const handleModalClose = () => {
     setShowModal(false);
   };
+
   const handleModalSubmit = () => {
     setShowModal(false);
   };
 
-  return ( //상단 메뉴바
+  return (
     <div>
       <Navbar bg="primary" variant="dark" expand="lg">
         <Navbar.Brand>SHrack</Navbar.Brand>
@@ -85,7 +56,6 @@ const HomePage = () => {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-
       <div
         style={{
           display: 'flex',
@@ -151,7 +121,9 @@ const HomePage = () => {
         </div>
       </div> 
       <ExerciseStartModal isModalShow={showModal} setModalShow={setShowModal} />  
+
     </div>
   );
 };
+
 export default HomePage;
