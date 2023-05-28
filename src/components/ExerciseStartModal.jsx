@@ -15,12 +15,14 @@ function ExerciseStartModal({ isModalShow, setModalShow }) {
   const [exerciseGoal, setExerciseGoal] = useState('');
   const history = useNavigate();
 
-  const handleModalSubmit = () => { //버튼 누르면 녹화 페이지로 데이터 넘기도록 => 추후 수정 예정
+  const handleModalSubmit = () => {
+    //버튼 누르면 녹화 페이지로 데이터 넘기도록 => 추후 수정 예정
     history.push('/녹화 페이지', { exerciseType, exerciseGoal });
     setModalShow(false);
   };
 
-  const yourExercisetypes = () => { //드롭다운 메뉴 구현
+  const yourExercisetypes = () => {
+    //드롭다운 메뉴 구현
     const exampleExerciseTypes = ['Push-up', 'Squat']; //운동 종류 임시 데이터 => 추후 수정 예정
     return exampleExerciseTypes.map((type, index) => (
       <option key={index} value={type}>
@@ -29,7 +31,7 @@ function ExerciseStartModal({ isModalShow, setModalShow }) {
     ));
   };
   const yourExercisegoals = () => {
-    const goals = Array.from({ length: 30 }, (_, index) => index + 1);  //운동 횟수 임시 데이터 => 추후 수정 예정
+    const goals = Array.from({ length: 30 }, (_, index) => index + 1); //운동 횟수 임시 데이터 => 추후 수정 예정
     return goals.map((goal, index) => (
       <option key={index} value={goal}>
         {goal}
@@ -44,10 +46,9 @@ function ExerciseStartModal({ isModalShow, setModalShow }) {
         onHide={() => setModalShow(false)}
         backdrop="static"
         keyboard={false}
-        centered
-      >
+        centered>
         <Modal.Header closeButton>
-          <Modal.Title>운동 시작</Modal.Title>
+          <Modal.Title>운동 시작하기</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -56,8 +57,7 @@ function ExerciseStartModal({ isModalShow, setModalShow }) {
               <Form.Control
                 as="select"
                 value={exerciseType}
-                onChange={(e) => setExerciseType(e.target.value)}
-              >
+                onChange={e => setExerciseType(e.target.value)}>
                 <option value="">종류를 선택하세요</option>
                 {yourExercisetypes()}
               </Form.Control>
@@ -67,8 +67,7 @@ function ExerciseStartModal({ isModalShow, setModalShow }) {
               <Form.Control
                 as="select"
                 value={exerciseGoal}
-                onChange={(e) => setExerciseGoal(e.target.value)}
-              >
+                onChange={e => setExerciseGoal(e.target.value)}>
                 <option value="">횟수를 선택하세요</option>
                 {yourExercisegoals()}
               </Form.Control>
