@@ -18,27 +18,28 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => { //날짜 가져오기
+    const fetchData = async () => {
       try {
-        const response = await axios.post('/exercise_log.json'); //json 파일 경로
+        const response = await axios.get('/exercise_log.json');  //날짜 가져오기(post에서 get으로 수정)
         const exerciseData = response.data.exercise;
+  
         const filteredData = exerciseData.filter((exercise) => {
           const exerciseDate = new Date(exercise.date);
           const selectedDateCopy = new Date(selectedDate);
           return (
-            exerciseDate.getFullYear() === selectedDateCopy.getFullYear() &&
-            exerciseDate.getMonth() === selectedDateCopy.getMonth() &&
-            exerciseDate.getDate() === selectedDateCopy.getDate()
+            exerciseDate.toDateString() === selectedDateCopy.toDateString()
           );
         });
   
         setExerciseRecords(filteredData);
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        console.log(error);
       }
     };
+  
     fetchData();
   }, [selectedDate]);
+  
   const handleAddExercise = () => {
     setShowModal(true);
   };
