@@ -16,6 +16,7 @@ function ExerciseStartModal({ isModalShow, setModalShow }) {
   const [exerciseType, setExerciseType] = useState('');
   const [exerciseGoal, setExerciseGoal] = useState(0);
   const [exerciseMass, setExerciseMass] = useState(0);
+  const [exerciseDirection, setExerciseDirection] = useState('');
   useEffect(() => {
     // execiseType and execiseGoal console.log
     console.log(exerciseType);
@@ -62,25 +63,25 @@ function ExerciseStartModal({ isModalShow, setModalShow }) {
               <Col>
                 <Form.Group controlId="exerciseType">
                   <Form.Label>운동 종류 선택</Form.Label>
-                  <Form.Control
-                    as="select"
+                  <Form.Select
                     value={exerciseType}
                     onChange={e => setExerciseType(e.target.value)}>
                     <option value="">종류를 선택하세요</option>
                     {yourExercisetypes()}
-                  </Form.Control>
+                  </Form.Select>
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group controlId="exerciseMass">
-                  <Form.Label>운동 무게(kg)</Form.Label>
-                  <Form.Control
-                    as="input"
-                    type="number"
-                    value={exerciseMass}
-                    onChange={e =>
-                      setExerciseMass(e.target.value)
-                    }></Form.Control>
+                {/* 운동 방향을 left와 right중 선택 */}
+                <Form.Group controlId="exerciseDirection">
+                  <Form.Label>운동 방향 선택</Form.Label>
+                  <Form.Select
+                    value={exerciseDirection}
+                    onChange={e => setExerciseDirection(e.target.value)}>
+                    <option value="">방향을 선택하세요</option>
+                    <option value="left">왼쪽</option>
+                    <option value="right">오른쪽</option>
+                  </Form.Select>
                 </Form.Group>
               </Col>
             </Row>
@@ -94,13 +95,13 @@ function ExerciseStartModal({ isModalShow, setModalShow }) {
                     type="number"
                     value={exerciseGoal}
                     onChange={e =>
-                      setExerciseGoal(e.target.value)
+                      setExerciseGoal(parseInt(e.target.value))
                     }></Form.Control>
                 </Form.Group>
               </Col>
               <Col>
                 <Form.Group controlId="exerciseMass">
-                  <Form.Label>운동 무게(kg)</Form.Label>
+                  <Form.Label>운동 중량(kg)</Form.Label>
                   <Form.Control
                     as="input"
                     type="number"
