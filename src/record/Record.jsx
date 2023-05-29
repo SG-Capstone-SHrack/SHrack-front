@@ -1,13 +1,15 @@
 import React from 'react';
 import { useEffect, useState, useRef } from 'react';
-import style from './App.module.css';
-import CameraComponent from './components/Camera';
-import Counter from './components/Counter';
-import RecordModal from './components/RecordModal';
-import Modal from 'react-modal';
-Modal.setAppElement('#root');
+import style from './Record.module.css';
+import CameraComponent from './Camera';
+import Counter from './Counter';
+import { useLocation } from 'react-router-dom';
 
 function Record() {
+  const location = useLocation();
+  const { exerciseType, exerciseGoal, exerciseDirection, exerciseMass } =
+    location.state;
+  console.log(exerciseType, exerciseGoal, exerciseDirection, exerciseMass);
   const [count, setCount] = useState(0);
   // count 1 증가
   const increaseCount = () => {
@@ -35,22 +37,9 @@ function Record() {
 
   // Modal
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const openModal = () => {
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
 
   return (
     <div className={style.container}>
-      <RecordModal
-        ariaHideApp={false}
-        isOpen={modalIsOpen}
-        closeModal={closeModal}
-      />
-
       <div className={style.item_top}>
         <button>뒤로가기</button>
       </div>
@@ -68,7 +57,7 @@ function Record() {
         <Counter count={count} />
         <div>운동 시간 {time}</div>
         <div>
-          <button onClick={openModal}>운동 종료하기</button>
+          <button>운동 종료하기</button>
         </div>
         <div>
           <button onClick={increaseCount}>Count up for test</button>

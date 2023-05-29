@@ -14,6 +14,7 @@ import {
 import { set } from 'react-hook-form';
 
 function ExerciseStartModal({ isModalShow, setModalShow }) {
+  const navigate = useNavigate();
   const [exerciseType, setExerciseType] = useState('');
   const [exerciseGoal, setExerciseGoal] = useState(0);
   const [exerciseMass, setExerciseMass] = useState(0);
@@ -33,14 +34,14 @@ function ExerciseStartModal({ isModalShow, setModalShow }) {
       return;
     }
     // '/record'로 이동, 이 때 exerciseType, exerciseGoal, exerciseDirection, exerciseMass를 같이 보내줌
-    // navigate('/record', {
-    //   state: {
-    //     exerciseType: exerciseType,
-    //     exerciseGoal: exerciseGoal,
-    //     exerciseDirection: exerciseDirection,
-    //     exerciseMass: exerciseMass,
-    //   },
-    // });
+    navigate('/record', {
+      state: {
+        exerciseType: exerciseType,
+        exerciseGoal: exerciseGoal,
+        exerciseDirection: exerciseDirection,
+        exerciseMass: exerciseMass,
+      },
+    });
 
     setModalShow(false);
   };
