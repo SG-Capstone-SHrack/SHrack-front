@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  height: 100vmax;
+  /* 만약 브라우저의 가로 폭이 600 이상이면, 높이를 100px로 고정 */
+
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  background-color: #fff;
+}
+@media (min-width: 600px) {
+  .container {
+    height: 100vh;
+  }
+}
+.item_top {
+  width: 100%;
+  height: 8%;
+  color: #fff;
+  text-align: center;
+  background: rebeccapurple;
+}
+.item_camera {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 60%;
+
+  color: #fff;
+  background: tan;
+
+  text-align: center;
+}
+.item {
+  width: 100%;
+  height: 32%;
+  color: #fff;
+  text-align: center;
+  background: #4584b1;
+}
