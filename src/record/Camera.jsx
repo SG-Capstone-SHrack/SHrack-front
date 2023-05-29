@@ -26,7 +26,7 @@ function CameraComponent({ count, setCount, hasPermission, setHasPermission }) {
         setHasPermission(false);
         console.log(err);
       });
-  });
+  }, []); // 이거 괄호 뺴면 안됨
   // 카메라 접근 허용을 했다면, videoRef에 stream을 넣어줌
   useEffect(() => {
     if (videoRef.current && stream) {
@@ -66,84 +66,46 @@ function CameraComponent({ count, setCount, hasPermission, setHasPermission }) {
       </div>
     );
   }
-  // function sendImage() {
-  //   const canvas = document.createElement('canvas');
-  //   canvas.width = videoRef.current.videoWidth;
-  //   canvas.height = videoRef.current.videoHeight;
-  //   canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
 
-  //   canvas.toBlob(
-  //     blob => {
-  //       const formData = new FormData();
-  //       formData.append('file', blob, 'file.jpg', { type: 'image/jpeg' });
-  //       console.log(formData);
-  //       axios
-  //         .post(
-  //           `http://34.69.53.183:8090/inference/image/${user_id}/${uuid}/${exercise_type}`,
-  //           formData,
-  //           {
-  //             headers: {
-  //               'Content-Type': 'multipart/form-data',
-  //             },
-  //           },
-  //         )
-  //         .then(res => {
-  //           console.log(res.data.count);
-  //           if (res.data > count) {
-  //             setCount(res.data.count);
-  //           }
-  //         })
-  //         .catch(err => {
-  //           console.log(err);
-  //         });
-  //     },
-  //     'image/jpeg',
-  //     0.1,
-  //   );
-  // }
+  setInterval(() => {
+    // 카메라가 허용되었을 때만 실행
+    if (!hasPermission) {
+      return;
+    }
+    const canvas = document.createElement('canvas');
+    canvas.width = videoRef.current.videoWidth;
+    canvas.height = videoRef.current.videoHeight;
+    canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
 
-  // const repeatWork = () => {
-  //   sendImage();
-  //   setTimeout(repeatWork, 5000);
-  // };
-
-  // const timeOutId = setTimeout(repeatWork, 5000);
-
-  // setInterval(() => {
-  //   const canvas = document.createElement('canvas');
-  //   canvas.width = videoRef.current.videoWidth;
-  //   canvas.height = videoRef.current.videoHeight;
-  //   canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
-
-  //   canvas.toBlob(
-  //     blob => {
-  //       const formData = new FormData();
-  //       formData.append('file', blob, 'file.jpg', { type: 'image/jpeg' });
-  //       console.log(formData);
-  //       axios
-  //         .post(
-  //           `http://34.69.53.183:8090/inference/image/${user_id}/${uuid}/${exercise_type}`,
-  //           formData,
-  //           {
-  //             headers: {
-  //               'Content-Type': 'multipart/form-data',
-  //             },
-  //           },
-  //         )
-  //         .then(res => {
-  //           console.log(res.data.count);
-  //           if (res.data > count) {
-  //             setCount(res.data.count);
-  //           }
-  //         })
-  //         .catch(err => {
-  //           console.log(err);
-  //         });
-  //     },
-  //     'image/jpeg',
-  //     0.1,
-  //   );
-  // }, 5000);
+    canvas.toBlob(
+      blob => {
+        const formData = new FormData();
+        formData.append('file', blob, 'file.jpg');
+        console.log(formData);
+        axios
+          .post(
+            `http://34.69.53.183:8090/inference/image/${user_id}/${uuid}/${exercise_type}`,
+            formData,
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            },
+          )
+          .then(res => {
+            console.log(res.data.count);
+            if (res.data > count) {
+              setCount(res.data.count);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      },
+      'image/jpeg',
+      0.1,
+    );
+  }, 5000);
 
   return (
     <video playsInline autoPlay ref={videoRef} className={styles.camera} />
