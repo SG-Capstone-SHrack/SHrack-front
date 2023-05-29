@@ -11,12 +11,15 @@ import {
   Col,
   Modal,
 } from 'react-bootstrap';
+import { set } from 'react-hook-form';
 
 function ExerciseStartModal({ isModalShow, setModalShow }) {
   const [exerciseType, setExerciseType] = useState('');
   const [exerciseGoal, setExerciseGoal] = useState(0);
   const [exerciseMass, setExerciseMass] = useState(0);
   const [exerciseDirection, setExerciseDirection] = useState('');
+
+  const [isAlert, setIsAlert] = useState(false);
   useEffect(() => {
     // execiseType and execiseGoal console.log
     console.log(exerciseType);
@@ -24,6 +27,21 @@ function ExerciseStartModal({ isModalShow, setModalShow }) {
   }, [exerciseType, exerciseGoal]);
 
   const handleModalSubmit = () => {
+    // exerciseType과 exerciseGoal과 exerciseDirection이 선택되지 않았다면 Alert 출력
+    if (exerciseType === '' || exerciseGoal === 0 || exerciseDirection === '') {
+      setIsAlert(true);
+      return;
+    }
+    // '/record'로 이동, 이 때 exerciseType, exerciseGoal, exerciseDirection, exerciseMass를 같이 보내줌
+    // navigate('/record', {
+    //   state: {
+    //     exerciseType: exerciseType,
+    //     exerciseGoal: exerciseGoal,
+    //     exerciseDirection: exerciseDirection,
+    //     exerciseMass: exerciseMass,
+    //   },
+    // });
+
     setModalShow(false);
   };
 
@@ -94,6 +112,7 @@ function ExerciseStartModal({ isModalShow, setModalShow }) {
                     as="input"
                     type="number"
                     value={exerciseGoal}
+                    min="0"
                     onChange={e =>
                       setExerciseGoal(parseInt(e.target.value))
                     }></Form.Control>
@@ -106,15 +125,25 @@ function ExerciseStartModal({ isModalShow, setModalShow }) {
                     as="input"
                     type="number"
                     value={exerciseMass}
+                    min="0"
                     onChange={e =>
                       setExerciseMass(e.target.value)
                     }></Form.Control>
                 </Form.Group>
               </Col>
             </Row>
+            <br />
+            <Row>
+              {isAlert && (
+                <Alert variant="warning">
+                  운동 종류와 운동 목표, 방향을 선택해주세요
+                </Alert>
+              )}
+            </Row>
           </Form>
         </Modal.Body>
         <Modal.Footer>
+          <br />
           <Button variant="primary" onClick={handleModalSubmit}>
             OK
           </Button>
