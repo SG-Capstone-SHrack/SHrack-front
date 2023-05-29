@@ -111,6 +111,10 @@ function Signup() {
       isBirthValid
     ) {
       e.preventDefault();
+      // birthdate format: YYYY-MM-DD (string)
+      const birthdate =
+        birth.substring(0, 4) + birth.substring(5, 7) + birth.substring(8, 10);
+      setIsLoading(true);
       axios
         .post('http://13.209.109.234:5000/signup', {
           //json 형식으로 서버에 전송
@@ -118,18 +122,23 @@ function Signup() {
           password: password,
           name: name,
           gender: gender,
-          birthdate: '2000-01-10',
+          birthdate: birthdate,
           height: height,
           weight: weight,
         })
         .then(res => {
           console.log(res);
+          alert('회원가입이 완료되었습니다.');
           //window.location.href = '/';
           //Todo:  회원가입 완료 메세지를 보여주는 부분 추가
         })
         .catch(err => {
           console.log(err);
           console.log('hihi error입니다'); //testp
+          alert('회원가입에 실패하였습니다. 잠시 후 다시 시도해주세요.');
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     } else {
       e.preventDefault();
@@ -309,6 +318,7 @@ function Signup() {
           </Col>
         </Row>
       </Form>
+      {isLoading && <Loader />}
     </Container>
   );
 }
