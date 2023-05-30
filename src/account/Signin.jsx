@@ -56,9 +56,10 @@ function Signin() {
       .then(res => {
         e.preventDefault(); //testp
         console.log(res);
-        localStorage.setItem('auth', res.data.key);
+        localStorage.setItem('auth', res.data.id);
+        console.log(localStorage.getItem('auth'));
         //Todo : 받는거 잘 분석해서 auth에 아이디 넣기
-        //window.location.href = '/'; //testp
+        window.location.href = '/';
       })
       .catch(err => {
         console.log(err);
