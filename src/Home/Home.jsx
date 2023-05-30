@@ -25,7 +25,7 @@ const HomePage = () => {
     try {
       const exerciseData = {
         id: id,
-        date: selectedDate.toISOString().split(0, 10)[0],
+        date: selectedDate.toISOString().split(0, 10),
       };
   
       const response = await axios.post('http://13.209.109.234:5000/exercise_log', exerciseData, {
@@ -39,6 +39,7 @@ const HomePage = () => {
       console.log(error);
     }
   };
+  
   
 
   const handleAddExercise = () => {
