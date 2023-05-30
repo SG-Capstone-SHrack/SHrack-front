@@ -24,8 +24,8 @@ const HomePage = () => {
   const sendExerciseData = async () => {
     try {
       const exerciseData = {
-        id: id,
-        date: selectedDate.toISOString().split(0, 10),
+        id: wnvyWkd123,//id,
+        date: 2023-05-27,//selectedDate.toISOString().split(0, 10),
       };
   
       const response = await axios.post('http://13.209.109.234:5000/exercise_log', exerciseData, {
