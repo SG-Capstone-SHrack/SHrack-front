@@ -12,46 +12,52 @@ const HomePage = () => {
   const [exerciseRecords, setExerciseRecords] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
-  // 로그아웃 -> localStorage에 저장된 auth 삭제
   const handleLogout = () => {
-    // 로그아웃
     localStorage.removeItem('auth');
     window.location.href = '/';
   };
-  const handleDateChange = date => {
+
+  const handleDateChange = (date) => {
     setSelectedDate(date);
-    setExerciseRecords([]);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('/exercise_log.json'); //날짜 가져오기(post에서 get으로 수정)
-        const exerciseData = response.data.exercise;
-
-        const filteredData = exerciseData.filter(exercise => {
-          const exerciseDate = new Date(exercise.date);
-          const selectedDateCopy = new Date(selectedDate);
-          return (
-            exerciseDate.toDateString() === selectedDateCopy.toDateString()
-          );
-        });
-
-        setExerciseRecords(filteredData);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchData();
-  }, [selectedDate]);
+  const sendExerciseData = async () => {
+    try {
+      const exerciseData = {
+        id: id,
+        date: selectedDate.toISOString().split(0, 10)[0],
+      };
+  
+      const response = await axios.post('http://13.209.109.234:5000/exercise_log', exerciseData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
 
   const handleAddExercise = () => {
     setShowModal(true);
   };
 
+  const handleModalClose = () => {
+    setShowModal(false);
+  };
+
+  const handleModalSubmit = () => {
+    setShowModal(false);
+  };
+
+  useEffect(() => {
+    sendExerciseData();
+  }, []);
+
   return (
-    //상단 메뉴바
     <div>
       <Navbar bg="primary" variant="dark" expand="lg">
         <Navbar.Brand>SHrack</Navbar.Brand>
@@ -71,7 +77,8 @@ const HomePage = () => {
           justifyContent: 'center',
           alignItems: 'center',
           height: '100vh',
-        }}>
+        }}
+      >
         <div style={{ width: '500px' }}>
           <Card.Body>
             <Card.Title style={{ marginBottom: '20px' }}>
@@ -104,7 +111,7 @@ const HomePage = () => {
                   ))
                 ) : (
                   <p>
-                    해당 날짜 운동 기록 없음{selectedDate.toLocaleDateString()}
+                    No exercise records found for {selectedDate.toLocaleDateString()}
                   </p>
                 )}
               </div>
@@ -119,7 +126,8 @@ const HomePage = () => {
                 right: '20px',
                 borderRadius: '50%',
               }}
-              onClick={handleAddExercise}>
+              onClick={handleAddExercise}
+            >
               🏋️
             </Button>
           </Card.Body>
