@@ -35,8 +35,6 @@ function Signin() {
       return;
     }
 
-    //디버깅을 위해 e.preventDefault() 사용
-    //실제 서버에 전송할 때는 e.preventDefault() 삭제
     const data = {
       id: id,
       password: password,
@@ -56,9 +54,10 @@ function Signin() {
       .then(res => {
         e.preventDefault(); //testp
         console.log(res);
-        localStorage.setItem('auth', res.data.key);
+        localStorage.setItem('auth', res.data.id);
+        console.log(localStorage.getItem('auth'));
         //Todo : 받는거 잘 분석해서 auth에 아이디 넣기
-        //window.location.href = '/'; //testp
+        window.location.href = '/';
       })
       .catch(err => {
         console.log(err);
