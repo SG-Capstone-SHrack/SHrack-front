@@ -35,8 +35,6 @@ function Signin() {
       return;
     }
 
-    //디버깅을 위해 e.preventDefault() 사용
-    //실제 서버에 전송할 때는 e.preventDefault() 삭제
     const data = {
       id: id,
       password: password,
