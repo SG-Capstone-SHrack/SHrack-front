@@ -52,7 +52,7 @@ function Signin() {
         headers,
       })
       .then(res => {
-        e.preventDefault(); //testp
+        e.preventDefault();
         console.log(res);
         localStorage.setItem('auth', res.data.id);
         console.log(localStorage.getItem('auth'));
