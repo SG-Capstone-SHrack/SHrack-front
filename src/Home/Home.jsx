@@ -24,23 +24,21 @@ const HomePage = () => {
   const sendExerciseData = async () => {
     try {
       const exerciseData = {
-        id: 'wnvyWkd123',//id,
-        date: '2023-05-27',//selectedDate.toISOString().split(0, 10),
+        id: 'wnvyWkd123', // Replace with your logic to get the ID
+        date: '2023-05-27', // Replace with your logic to get the date
       };
-  
+
       const response = await axios.post('http://13.209.109.234:5000/exercise_log', exerciseData, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-  
-      console.log(response.data);
+
+      setExerciseRecords(response.data);
     } catch (error) {
       console.log(error);
     }
   };
-  
-  
 
   const handleAddExercise = () => {
     setShowModal(true);
@@ -72,32 +70,26 @@ const HomePage = () => {
         </Navbar.Collapse>
       </Navbar>
 
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-        }}
-      >
+      <div className="d-flex justify-content-center align-items-center mt-5">
         <div style={{ width: '500px' }}>
           <Card.Body>
-            <Card.Title style={{ marginBottom: '20px' }}>
+            <Card.Title className="text-center">
               Welcome to SHrack! Hello User {id}
             </Card.Title>
             <DatePicker
               selected={selectedDate}
               onChange={handleDateChange}
-              style={{ marginBottom: '20px' }}
+              className="w-100 mb-3"
+              inline // Show the DatePicker as a calendar
             />
             {selectedDate && (
               <div>
-                <h6>
+                <h6 className="mb-3">
                   Exercise information on {selectedDate.toLocaleDateString()}
                 </h6>
                 {exerciseRecords.length > 0 ? (
                   exerciseRecords.map((record, index) => (
-                    <Card key={index} style={{ marginBottom: '10px' }}>
+                    <Card key={index} className="mb-2">
                       <Card.Body>
                         <Card.Title>{record.exercise_name}</Card.Title>
                         <Card.Text>Start Time: {record.start_time}</Card.Text>
@@ -117,23 +109,18 @@ const HomePage = () => {
                 )}
               </div>
             )}
-            <Button
-              variant="primary"
-              style={{
-                width: '75px',
-                height: '75px',
-                position: 'fixed',
-                bottom: '20px',
-                right: '20px',
-                borderRadius: '50%',
-              }}
-              onClick={handleAddExercise}
-            >
-              🏋️
-            </Button>
           </Card.Body>
         </div>
       </div>
+
+      <Button
+        variant="primary"
+        className="rounded-circle position-fixed bottom-0 end-0 m-3"
+        style={{ width: '75px', height: '75px' }}
+        onClick={handleAddExercise}
+      >
+        🏋️
+      </Button>
 
       <ExerciseStartModal isModalShow={showModal} setModalShow={setShowModal} />
     </div>
