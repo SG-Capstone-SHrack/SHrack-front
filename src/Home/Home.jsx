@@ -24,8 +24,8 @@ const HomePage = () => {
   const sendExerciseData = async () => {
     try {
       const exerciseData = {
-        id: 'wnvyWkd123', // Replace with your logic to get the ID
-        date: '2023-05-27', // Replace with your logic to get the date
+        id: 'wnvyWkd123', 
+        date: '2023-05-27', 
       };
 
       const response = await axios.post('http://13.209.109.234:5000/exercise_log', exerciseData, {
