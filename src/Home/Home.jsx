@@ -24,17 +24,21 @@ const HomePage = () => {
   const sendExerciseData = async () => {
     try {
       const exerciseData = {
-        id: 'wnvyWkd123', 
-        date: '2023-05-27', 
+        id: localStorage.getItem('auth'),
+        date: selectedDate.toISOString().split('T')[0],
       };
 
-      const response = await axios.post('http://13.209.109.234:5000/exercise_log', exerciseData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await axios.post(
+        'http://13.209.109.234:5000/exercise_log',
+        exerciseData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
-      setExerciseRecords(response.data);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -70,26 +74,32 @@ const HomePage = () => {
         </Navbar.Collapse>
       </Navbar>
 
-      <div className="d-flex justify-content-center align-items-center mt-5">
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
         <div style={{ width: '500px' }}>
           <Card.Body>
-            <Card.Title className="text-center">
+            <Card.Title style={{ marginBottom: '20px' }}>
               Welcome to SHrack! Hello User {id}
             </Card.Title>
             <DatePicker
               selected={selectedDate}
               onChange={handleDateChange}
-              className="w-100 mb-3"
-              inline // Show the DatePicker as a calendar
+              style={{ marginBottom: '20px' }}
             />
             {selectedDate && (
               <div>
-                <h6 className="mb-3">
+                <h6>
                   Exercise information on {selectedDate.toLocaleDateString()}
                 </h6>
                 {exerciseRecords.length > 0 ? (
                   exerciseRecords.map((record, index) => (
-                    <Card key={index} className="mb-2">
+                    <Card key={index} style={{ marginBottom: '10px' }}>
                       <Card.Body>
                         <Card.Title>{record.exercise_name}</Card.Title>
                         <Card.Text>Start Time: {record.start_time}</Card.Text>
@@ -104,23 +114,29 @@ const HomePage = () => {
                   ))
                 ) : (
                   <p>
-                    No exercise records found for {selectedDate.toLocaleDateString()}
+                    No exercise records found for{' '}
+                    {selectedDate.toLocaleDateString()}
                   </p>
                 )}
               </div>
             )}
+            <Button
+              variant="primary"
+              style={{
+                width: '75px',
+                height: '75px',
+                position: 'fixed',
+                bottom: '20px',
+                right: '20px',
+                borderRadius: '50%',
+              }}
+              onClick={handleAddExercise}
+            >
+              🏋️
+            </Button>
           </Card.Body>
         </div>
       </div>
-
-      <Button
-        variant="primary"
-        className="rounded-circle position-fixed bottom-0 end-0 m-3"
-        style={{ width: '75px', height: '75px' }}
-        onClick={handleAddExercise}
-      >
-        🏋️
-      </Button>
 
       <ExerciseStartModal isModalShow={showModal} setModalShow={setShowModal} />
     </div>
