@@ -5,9 +5,11 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Card, Navbar, Nav, Button } from 'react-bootstrap';
 import axios from 'axios';
 import ExerciseStartModal from '../components/ExerciseStartModal';
+import { formatISO } from 'date-fns';
 
 const HomePage = () => {
-  const { id } = useParams();
+  const id = localStorage.getItem('auth');
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [exerciseRecords, setExerciseRecords] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -23,11 +25,12 @@ const HomePage = () => {
 
   const sendExerciseData = async () => {
     try {
+      const formattedDate = formatISO(selectedDate, { representation: 'date' });
       const exerciseData = {
         id: localStorage.getItem('auth'),
-        date: selectedDate.toISOString().split('T')[0],
+        date: formattedDate,
       };
-
+  
       const response = await axios.post(
         'http://13.209.109.234:5000/exercise_log',
         exerciseData,
@@ -37,12 +40,13 @@ const HomePage = () => {
           },
         }
       );
-
-      console.log(response.data);
+  
+      setExerciseRecords(response.data.exercise_log);
     } catch (error) {
       console.log(error);
     }
   };
+  
 
   const handleAddExercise = () => {
     setShowModal(true);
@@ -58,7 +62,7 @@ const HomePage = () => {
 
   useEffect(() => {
     sendExerciseData();
-  }, []);
+  }, [selectedDate]);
 
   return (
     <div>
@@ -85,7 +89,7 @@ const HomePage = () => {
         <div style={{ width: '500px' }}>
           <Card.Body>
             <Card.Title style={{ marginBottom: '20px' }}>
-              Welcome to SHrack! Hello User {id}
+              Welcome to SHrack! Hello {id ? `User ${id}` : ''}
             </Card.Title>
             <DatePicker
               selected={selectedDate}
