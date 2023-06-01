@@ -1,15 +1,27 @@
 import React from 'react';
 import { useEffect, useState, useRef } from 'react';
+import {
+  Button,
+  Form,
+  Container,
+  FloatingLabel,
+  Alert,
+  Row,
+  Col,
+  Modal,
+} from 'react-bootstrap';
 import style from './Record.module.css';
 import CameraComponent from './Camera';
-import Counter from './Counter';
+
 import { useLocation } from 'react-router-dom';
 
 function Record() {
+  // ExerciseStartModal로부터 정보 받아옴
   const location = useLocation();
   const { exerciseType, exerciseGoal, exerciseDirection, exerciseMass } =
     location.state;
-  console.log(exerciseType, exerciseGoal, exerciseDirection, exerciseMass);
+
+  // count를 위한 상태
   const [count, setCount] = useState(0);
   // count 1 증가
   const increaseCount = () => {
@@ -21,13 +33,14 @@ function Record() {
   // camera가 존재하고 권한이 있는지 확인하는 변수
   const [hasPermission, setHasPermission] = useState(null);
   const startTime = useRef(null);
-
+  useEffect(() => {
+    startTime.current = new Date();
+  }, []);
   // hasPermission이 true가 되면 1초마다 time이 1씩 증가
   useEffect(() => {
     if (hasPermission) {
       // startTime에 현재 시간 저장
-      startTime.current = new Date();
-      console.log(startTime.current);
+
       const interval = setInterval(() => {
         setTime(prevTime => prevTime + 1);
       }, 1000);
@@ -35,35 +48,31 @@ function Record() {
     }
   }, [hasPermission]);
 
-  // Modal
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  // 운동이 끝났는지 확인하는 state
+  const [isExerciseEnd, setIsExerciseEnd] = useState(false);
 
   return (
-    <div className={style.container}>
-      <div className={style.item_top}>
-        <button>뒤로가기</button>
-      </div>
-
-      <div className={style.item_camera}>
+    <Container>
+      <Row className="justify-content-center">
         <CameraComponent
           count={count}
           setCount={setCount}
           hasPermission={hasPermission}
           setHasPermission={setHasPermission}
+          exerciseType={exerciseType}
+          exerciseGoal={exerciseGoal}
+          exerciseDirection={exerciseDirection}
+          exerciseMass={exerciseMass}
+          isExerciseEnd={isExerciseEnd}
+          startTime={startTime}
         />
-      </div>
+      </Row>
 
       <div className={style.item}>
-        <Counter count={count} />
+        <h1>{count}</h1>
         <div>운동 시간 {time}</div>
-        <div>
-          <button>운동 종료하기</button>
-        </div>
-        <div>
-          <button onClick={increaseCount}>Count up for test</button>
-        </div>
       </div>
-    </div>
+    </Container>
   );
 }
 

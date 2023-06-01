@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  Button,
-  Form,
-  Container,
-  FloatingLabel,
-  Alert,
-  Row,
-  Col,
-  Modal,
-} from 'react-bootstrap';
+import { Button, Form, Alert, Row, Col, Modal } from 'react-bootstrap';
 import { set } from 'react-hook-form';
 
 function ExerciseStartModal({ isModalShow, setModalShow }) {

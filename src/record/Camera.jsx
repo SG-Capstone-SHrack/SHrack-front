@@ -1,21 +1,55 @@
 import React, { useEffect, useRef, useState } from 'react';
+import {
+  Card,
+  Button,
+  Form,
+  Container,
+  FloatingLabel,
+  Alert,
+  Row,
+  Col,
+  Modal,
+} from 'react-bootstrap';
 import styles from './Camera.module.css';
 import axios from 'axios';
 
-function CameraComponent({ count, setCount, hasPermission, setHasPermission }) {
+function CameraComponent({
+  count,
+  setCount,
+  hasPermission,
+  setHasPermission,
+  exerciseType,
+  exerciseGoal,
+  exerciseDirection,
+  exerciseMass,
+  isExerciseEnd,
+  startTime,
+}) {
   const videoRef = useRef(null);
   //const [hasPermission, setHasPermission] = useState(null);
   const [stream, setStream] = useState(null);
   //사용자 디바이스에 카메라가 없다면, 카메라가 없다는 메시지를 보여줌
 
+  const [userId, setUserId] = useState('');
+  const [uuid, setUuid] = useState('');
   // test용 값
-  const user_id = 'test';
-  const uuid = '123';
-  const exercise_type = 'squat-left-leg';
+
+  // exercise_type은 exerciseType과 exerciseDirection을 합친 값
+  let exercise_type = exerciseType + '-' + exerciseDirection;
+  if (exerciseType === 'squat') {
+    exercise_type = exercise_type + '-leg';
+  } else {
+    exercise_type = exercise_type + '-arm';
+  }
 
   // 사용자가 카메라 접근 허용을 했는지 확인
   // 만약 허용을 안했다면, 허용을 요청
   useEffect(() => {
+    // uuid 설정 -> 6자리 난수
+    const uuid = Math.floor(Math.random() * 1000000);
+    setUuid(uuid);
+
+    setUserId(localStorage.getItem('auth'));
     navigator.mediaDevices
       .getUserMedia({ video: true })
       .then(stream => {
@@ -36,7 +70,7 @@ function CameraComponent({ count, setCount, hasPermission, setHasPermission }) {
 
   // 카메라가 없다면, 카메라가 없다는 메시지를 보여줌
   if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-    return <div>카메라가 없습니다.</div>;
+    return <Alert variant="danger">기기에 카메라가 없습니다.</Alert>;
   }
   // 카메라 접근 허용을 했다면, videoRef를 보여줌
   if (hasPermission === null) {
@@ -45,10 +79,13 @@ function CameraComponent({ count, setCount, hasPermission, setHasPermission }) {
   // 카메라 접근 허용을 하지 않았다면, 허용을 요청하는 버튼 보여줌
   if (hasPermission === false) {
     return (
-      <div>
-        카메라 접근을 허용해주세요
+      <Card style={{ width: '80%', margin: '1rem' }}>
+        <Card.Body>카메라 접근을 허용해주세요</Card.Body>
         <br />
-        <button
+        <Button
+          style={{
+            margin: '1rem',
+          }}
           onClick={() => {
             navigator.mediaDevices
               .getUserMedia({ video: true })
@@ -62,8 +99,8 @@ function CameraComponent({ count, setCount, hasPermission, setHasPermission }) {
               });
           }}>
           허용
-        </button>
-      </div>
+        </Button>
+      </Card>
     );
   }
   const sendImage = () => {
@@ -82,7 +119,7 @@ function CameraComponent({ count, setCount, hasPermission, setHasPermission }) {
         console.log(formData);
         axios
           .post(
-            `http://34.69.53.183:8090/inference/image/${user_id}/${uuid}/${exercise_type}`,
+            `http://34.69.53.183:8090/inference/image/${userId}/${uuid}/${exercise_type}`,
             formData,
             {
               headers: {
@@ -92,7 +129,7 @@ function CameraComponent({ count, setCount, hasPermission, setHasPermission }) {
           )
           .then(res => {
             console.log(res.data.count);
-            if (res.data > count) {
+            if (parseInt(res.data.count) > count) {
               setCount(res.data.count);
             }
           })
@@ -109,45 +146,9 @@ function CameraComponent({ count, setCount, hasPermission, setHasPermission }) {
     setTimeout(repeatWork, 5000);
   };
   const timeoutId = setTimeout(repeatWork, 5000);
-  // setInterval(() => {
-  //   // 카메라가 허용되었을 때만 실행
-  //   if (!hasPermission) {
-  //     return;
-  //   }
-  //   const canvas = document.createElement('canvas');
-  //   canvas.width = videoRef.current.videoWidth;
-  //   canvas.height = videoRef.current.videoHeight;
-  //   canvas.getContext('2d').drawImage(videoRef.current, 0, 0);
-
-  //   canvas.toBlob(
-  //     blob => {
-  //       const formData = new FormData();
-  //       formData.append('file', blob, 'file.jpg');
-  //       console.log(formData);
-  //       axios
-  //         .post(
-  //           `http://34.69.53.183:8090/inference/image/${user_id}/${uuid}/${exercise_type}`,
-  //           formData,
-  //           {
-  //             headers: {
-  //               'Content-Type': 'multipart/form-data',
-  //             },
-  //           },
-  //         )
-  //         .then(res => {
-  //           console.log(res.data.count);
-  //           if (res.data > count) {
-  //             setCount(res.data.count);
-  //           }
-  //         })
-  //         .catch(err => {
-  //           console.log(err);
-  //         });
-  //     },
-  //     'image/jpeg',
-  //     0.1,
-  //   );
-  // }, 5000);
+  if (isExerciseEnd) {
+    clearTimeout(timeoutId);
+  }
 
   return (
     <video playsInline autoPlay ref={videoRef} className={styles.camera} />
