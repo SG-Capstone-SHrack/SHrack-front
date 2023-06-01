@@ -2,35 +2,35 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Card, Navbar, Nav, Button } from 'react-bootstrap';
+import { Card, Navbar, Nav, Button, ProgressBar } from 'react-bootstrap';
 import axios from 'axios';
 import ExerciseStartModal from '../components/ExerciseStartModal';
 import { formatISO } from 'date-fns';
 
 const HomePage = () => {
-  const id = localStorage.getItem('auth');
-
+  const [id, setId] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [exerciseRecords, setExerciseRecords] = useState([]);
   const [showModal, setShowModal] = useState(false);
-
   const handleLogout = () => {
     localStorage.removeItem('auth');
     window.location.href = '/';
   };
+  useEffect(() => {
+    const authId = localStorage.getItem('auth');
+    setId(authId);
+  }, []);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
-
   const sendExerciseData = async () => {
     try {
       const formattedDate = formatISO(selectedDate, { representation: 'date' });
       const exerciseData = {
-        id: localStorage.getItem('auth'),
+        id,
         date: formattedDate,
       };
-  
       const response = await axios.post(
         'http://13.209.109.234:5000/exercise_log',
         exerciseData,
@@ -40,13 +40,12 @@ const HomePage = () => {
           },
         }
       );
-  
+
       setExerciseRecords(response.data.exercise_log);
     } catch (error) {
       console.log(error);
     }
   };
-  
 
   const handleAddExercise = () => {
     setShowModal(true);
@@ -59,6 +58,8 @@ const HomePage = () => {
   const handleModalSubmit = () => {
     setShowModal(false);
   };
+
+
 
   useEffect(() => {
     sendExerciseData();
@@ -84,6 +85,7 @@ const HomePage = () => {
           justifyContent: 'center',
           alignItems: 'center',
           height: '100vh',
+          padding: '0 20px',
         }}
       >
         <div style={{ width: '500px' }}>
@@ -113,6 +115,7 @@ const HomePage = () => {
                         </Card.Text>
                         <Card.Text>Mass: {record.mass}</Card.Text>
                         <Card.Text>Count: {record.count}</Card.Text>
+
                       </Card.Body>
                     </Card>
                   ))
