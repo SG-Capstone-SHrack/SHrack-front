@@ -115,8 +115,9 @@ function Signup() {
       const birthdate =
         birth.substring(0, 4) + birth.substring(5, 7) + birth.substring(8, 10);
       setIsLoading(true);
+      //http://13.209.109.234:5000/signup
       axios
-        .post('http://13.209.109.234:5000/signup', {
+        .post('https://shrack.p-e.kr/signup', {
           //json 형식으로 서버에 전송
           id: id,
           password: password,

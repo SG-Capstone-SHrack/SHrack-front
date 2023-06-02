@@ -46,7 +46,7 @@ function ExerciseEndModal({
 
     // 서버로 보내는 코드
     axios
-      .post('http://13.209.109.234:5000/exercise_end', exerciseRecord)
+      .post('https://shrack.p-e.kr/exercise_end', exerciseRecord)
       .then(res => {
         console.log(res);
         //navigate('/'); //testpurpose
