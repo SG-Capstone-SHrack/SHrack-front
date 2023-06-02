@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/SG-Capstone-SHrack/SHrack-front/static/css/main.6ddf4782.css",
+    "main.js": "/SG-Capstone-SHrack/SHrack-front/static/js/main.9da60206.js",
+    "index.html": "/SG-Capstone-SHrack/SHrack-front/index.html",
+    "main.6ddf4782.css.map": "/SG-Capstone-SHrack/SHrack-front/static/css/main.6ddf4782.css.map",
+    "main.9da60206.js.map": "/SG-Capstone-SHrack/SHrack-front/static/js/main.9da60206.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6ddf4782.css",
+    "static/js/main.9da60206.js"
+  ]
+}
