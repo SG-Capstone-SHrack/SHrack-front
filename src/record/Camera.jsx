@@ -12,6 +12,7 @@ import {
 } from 'react-bootstrap';
 import styles from './Camera.module.css';
 import axios from 'axios';
+import { clear } from '@testing-library/user-event/dist/clear';
 
 function CameraComponent({
   count,
@@ -32,7 +33,6 @@ function CameraComponent({
 
   const [userId, setUserId] = useState('');
   const [uuid, setUuid] = useState('');
-  // test용 값
 
   // exercise_type은 exerciseType과 exerciseDirection을 합친 값
   let exercise_type = exerciseType + '-' + exerciseDirection;
@@ -79,8 +79,9 @@ function CameraComponent({
   // 카메라 접근 허용을 하지 않았다면, 허용을 요청하는 버튼 보여줌
   if (hasPermission === false) {
     return (
-      <Card style={{ width: '80%', margin: '1rem' }}>
-        <Card.Body>카메라 접근을 허용해주세요</Card.Body>
+      <Card className="text-center" style={{ width: '80%', margin: '1rem' }}>
+        <Card.Header>카메라 권한이 필요합니다. </Card.Header>
+        <Card.Body>카메라 접근을 허용해주세요. </Card.Body>
         <br />
         <Button
           style={{
@@ -146,6 +147,7 @@ function CameraComponent({
     setTimeout(repeatWork, 5000);
   };
   const timeoutId = setTimeout(repeatWork, 5000);
+  //clearTimeout(timeoutId); //testpurpose
   if (isExerciseEnd) {
     clearTimeout(timeoutId);
   }

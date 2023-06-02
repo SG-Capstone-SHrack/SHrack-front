@@ -9,9 +9,11 @@ import {
   Row,
   Col,
   Modal,
+  Navbar,
 } from 'react-bootstrap';
 import style from './Record.module.css';
 import CameraComponent from './Camera';
+import ExerciseEndModal from './ExerciseEndModal';
 
 import { useLocation } from 'react-router-dom';
 
@@ -36,6 +38,7 @@ function Record() {
   useEffect(() => {
     startTime.current = new Date();
   }, []);
+
   // hasPermission이 true가 되면 1초마다 time이 1씩 증가
   useEffect(() => {
     if (hasPermission) {
@@ -49,30 +52,54 @@ function Record() {
   }, [hasPermission]);
 
   // 운동이 끝났는지 확인하는 state
+  // 목표 횟수를 달성하거나, 종료 버튼을 누르면 true로 바뀜
   const [isExerciseEnd, setIsExerciseEnd] = useState(false);
+  // 운동 완료 Modal
+  const [showModal, setShowModal] = useState(false);
+  const handleModalOpen = () => {
+    setShowModal(true);
+  };
 
   return (
-    <Container>
-      <Row className="justify-content-center">
-        <CameraComponent
-          count={count}
-          setCount={setCount}
-          hasPermission={hasPermission}
-          setHasPermission={setHasPermission}
-          exerciseType={exerciseType}
-          exerciseGoal={exerciseGoal}
-          exerciseDirection={exerciseDirection}
-          exerciseMass={exerciseMass}
-          isExerciseEnd={isExerciseEnd}
-          startTime={startTime}
-        />
-      </Row>
+    <div>
+      <Container>
+        <Navbar>
+          <Container>
+            <Navbar.Brand>SHrack - 운동 기록 중</Navbar.Brand>
+          </Container>
+        </Navbar>
+        <Row className="justify-content-center">
+          <div className={style.item_camera}>
+            <CameraComponent
+              count={count}
+              setCount={setCount}
+              hasPermission={hasPermission}
+              setHasPermission={setHasPermission}
+              exerciseType={exerciseType}
+              exerciseGoal={exerciseGoal}
+              exerciseDirection={exerciseDirection}
+              exerciseMass={exerciseMass}
+              isExerciseEnd={isExerciseEnd}
+            />
+          </div>
+        </Row>
 
-      <div className={style.item}>
-        <h1>{count}</h1>
-        <div>운동 시간 {time}</div>
-      </div>
-    </Container>
+        <div className={style.item}>
+          <h1>{count}</h1>
+          <div>운동 시간 {time}</div>
+          <Button onClick={handleModalOpen}>종료</Button>
+        </div>
+      </Container>
+      <ExerciseEndModal
+        isModalShow={showModal}
+        setModalShow={setShowModal}
+        count={count}
+        exerciseType={exerciseType}
+        exerciseGoal={exerciseGoal}
+        exerciseMass={exerciseMass}
+        startTime={startTime}
+      />
+    </div>
   );
 }
 
