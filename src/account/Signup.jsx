@@ -130,7 +130,7 @@ function Signup() {
         .then(res => {
           console.log(res);
           alert('회원가입이 완료되었습니다.');
-          //window.location.href = '/';
+          window.location.href = process.env.PUBLIC_URL;
           //Todo:  회원가입 완료 메세지를 보여주는 부분 추가
         })
         .catch(err => {

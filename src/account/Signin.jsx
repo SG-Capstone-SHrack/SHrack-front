@@ -56,8 +56,8 @@ function Signin() {
         console.log(res);
         localStorage.setItem('auth', res.data.id);
         console.log(localStorage.getItem('auth'));
-        //Todo : 받는거 잘 분석해서 auth에 아이디 넣기
-        window.location.href = '/';
+        // 이후 페이지 이동
+        window.location.href = process.env.PUBLIC_URL;
       })
       .catch(err => {
         console.log(err);

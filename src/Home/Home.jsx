@@ -16,7 +16,7 @@ const HomePage = () => {
   const handleLogout = () => {
     //로그아웃 시 : 로컬스토리지에서 auth 삭제 후 홈으로 이동
     localStorage.removeItem('auth');
-    window.location.href = '/';
+    window.location.href = process.env.PUBLIC_URL;
   };
   useEffect(() => {
     //로그인 시 : 로컬스토리지에서 auth 가져와서 저장
@@ -78,7 +78,6 @@ const HomePage = () => {
           <Nav className="mr-auto">
             <Nav.Link href="#">MyPage</Nav.Link>
             <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-            <Nav.Link href="#">Other Menu</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

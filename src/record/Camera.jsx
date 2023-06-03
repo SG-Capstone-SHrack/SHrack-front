@@ -118,9 +118,10 @@ function CameraComponent({
         const formData = new FormData();
         formData.append('file', blob, 'file.jpg');
         console.log(formData);
+        //http://34.69.53.183:8090
         axios
           .post(
-            `http://34.69.53.183:8090/inference/image/${userId}/${uuid}/${exercise_type}`,
+            `https://shrack-ml.p-e.kr/inference/image/${userId}/${uuid}/${exercise_type}`,
             formData,
             {
               headers: {
