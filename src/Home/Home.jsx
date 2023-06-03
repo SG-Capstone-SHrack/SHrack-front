@@ -6,6 +6,8 @@ import { Card, Navbar, Nav, Button, ProgressBar } from 'react-bootstrap';
 import axios from 'axios';
 import ExerciseStartModal from '../components/ExerciseStartModal';
 import { formatISO } from 'date-fns'; //날짜 포매팅 위해 추가
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './HomePage.css'; // Create a new CSS file for custom styles
 
 const HomePage = () => {
   const [id, setId] = useState(''); //id 상수 추가
@@ -69,8 +71,7 @@ const HomePage = () => {
   };
 
   return (
-    //상단 메뉴바
-    <div>
+    <div className="home-page">
       <Navbar bg="primary" variant="dark" expand="lg">
         <Navbar.Brand>SHrack</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -82,33 +83,29 @@ const HomePage = () => {
         </Navbar.Collapse>
       </Navbar>
 
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-          padding: '0 20px',
-        }}>
-        <div style={{ width: '500px' }}>
-          <Card.Body>
-            <Card.Title style={{ marginBottom: '20px' }}>
-              Welcome to SHrack! Hello {id ? `User ${id}` : ''}
-            </Card.Title>
-            <DatePicker
-              selected={selectedDate}
-              onChange={handleDateChange}
-              style={{ marginBottom: '20px' }}
-            />
-            {selectedDate && (
-              <div>
-                <h6>
-                  Exercise information on {selectedDate.toLocaleDateString()}
-                </h6>
-                {exerciseRecords.length > 0 ? (
-                  exerciseRecords.map((record, index) => (
-                    <Card key={index} style={{ marginBottom: '10px' }}>
-                      <Card.Body>
+      <div className="content">
+        <div className="welcome">
+          <h2 className="welcome-title">Welcome to SHrack!</h2>
+          <p className="welcome-subtitle">{id ? `Hello, User ${id}` : ''}</p>
+        </div>
+
+        <div className="exercise-info">
+          <DatePicker
+            selected={selectedDate}
+            onChange={handleDateChange}
+            className="date-picker"
+          />
+
+          {selectedDate && (
+            <div className="exercise-data">
+              <h6 className="exercise-data-title">
+                Exercise information on {selectedDate.toLocaleDateString()}
+              </h6>
+
+              {exerciseRecords.length > 0 ? (
+                exerciseRecords.map((record, index) => (
+                  <Card key={index} className="exercise-card">
+                    <Card.Body>
                         <Card.Title>{record.exercise_name}</Card.Title>
                         <Card.Text>Start Time: {record.start_time}</Card.Text>
                         <Card.Text>End Time: {record.end_time}</Card.Text>
@@ -117,31 +114,24 @@ const HomePage = () => {
                         </Card.Text>
                         <Card.Text>Mass: {record.mass}</Card.Text>
                         <Card.Text>Count: {record.count}</Card.Text>
-                      </Card.Body>
-                    </Card>
-                  ))
-                ) : (
-                  <p>
-                    No exercise records found for{' '}
-                    {selectedDate.toLocaleDateString()}
-                  </p>
-                )}
-              </div>
-            )}
-            <Button
-              variant="primary"
-              style={{
-                width: '75px',
-                height: '75px',
-                position: 'fixed',
-                bottom: '20px',
-                right: '20px',
-                borderRadius: '50%',
-              }}
-              onClick={handleAddExercise}>
-              🏋️
-            </Button>
-          </Card.Body>
+                    </Card.Body>
+                  </Card>
+                ))
+              ) : (
+                <p className="no-records">
+                  No exercise records found for {selectedDate.toLocaleDateString()}
+                </p>
+              )}
+            </div>
+          )}
+
+          <Button
+            variant="primary"
+            className="add-exercise-button"
+            onClick={handleAddExercise}
+          >
+            🏋️
+          </Button>
         </div>
       </div>
 
@@ -149,5 +139,4 @@ const HomePage = () => {
     </div>
   );
 };
-
 export default HomePage;
