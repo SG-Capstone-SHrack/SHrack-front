@@ -85,8 +85,8 @@ const HomePage = () => {
 
       <div className="content">
         <div className="welcome">
-          <h2 className="welcome-title">Welcome to SHrack!</h2>
-          <p className="welcome-subtitle">{id ? `Hello, User ${id}` : ''}</p>
+          <h1 className="welcome-title">Welcome to SHrack!</h1>
+          <p className="welcome-subtitle">{id ? `Hello, User, ${id}` : ''}</p>
         </div>
 
         <div className="exercise-info">
@@ -98,6 +98,7 @@ const HomePage = () => {
 
           {selectedDate && (
             <div className="exercise-data">
+              <div className="center-container">
               <h6 className="exercise-data-title">
                 Exercise information on {selectedDate.toLocaleDateString()}
               </h6>
@@ -122,6 +123,7 @@ const HomePage = () => {
                   No exercise records found for {selectedDate.toLocaleDateString()}
                 </p>
               )}
+              </div>
             </div>
           )}
 
