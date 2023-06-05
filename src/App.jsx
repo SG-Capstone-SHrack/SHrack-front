@@ -12,7 +12,7 @@ function App() {
   //const auth = useRecoilValue(authAtom);
   // localStorage로부터 auth 정보를 가져온다.
   const auth = localStorage.getItem('auth');
-  console.log(auth);
+  // console.log(auth);
 
   return (
     <Routes>
