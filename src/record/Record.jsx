@@ -25,10 +25,6 @@ function Record() {
 
   // count를 위한 상태
   const [count, setCount] = useState(0);
-  // count 1 증가
-  const increaseCount = () => {
-    setCount(prevCount => prevCount + 1);
-  };
 
   const [time, setTime] = useState(0);
 
