@@ -70,7 +70,13 @@ function CameraComponent({
   };
 
   useEffect(() => {
-    const uuid = Math.floor(Math.random() * 1000000);
+    // uuid는 현재 yyyymmddhhmmss
+    const uuid = new Date()
+      .toISOString()
+      .slice(0, 19)
+      .replace(/-/g, '')
+      .replace(/:/g, '')
+      .replace('T', '');
     setUuid(uuid);
 
     setUserId(localStorage.getItem('auth'));
@@ -113,14 +119,15 @@ function CameraComponent({
     }
   }, [hasPermission, isExerciseEnd]);
 
+  // 카메라가 없으면 카메라가 없다는 메세지 출력
   if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
     return <Alert variant="danger">기기에 카메라가 없습니다.</Alert>;
   }
-
+  // 에러 핸들링
   if (hasPermission === null) {
-    return <div />;
+    return <div>권한 상태 비정상</div>;
   }
-
+  // 권한이 없을 경우, 권한 요청 버튼
   if (hasPermission === false) {
     return (
       <Card className="text-center" style={{ width: '80%', margin: '1rem' }}>
@@ -148,7 +155,7 @@ function CameraComponent({
       </Card>
     );
   }
-
+  // 권한이 있으면 카메라 화면을 보여줌
   return (
     <video playsInline autoPlay ref={videoRef} className={styles.camera} />
   );
