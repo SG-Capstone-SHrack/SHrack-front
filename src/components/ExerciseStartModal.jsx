@@ -12,11 +12,6 @@ function ExerciseStartModal({ isModalShow, setModalShow }) {
   const [exerciseDirection, setExerciseDirection] = useState('');
 
   const [isAlert, setIsAlert] = useState(false);
-  useEffect(() => {
-    // execiseType and execiseGoal console.log
-    console.log(exerciseType);
-    console.log(exerciseGoal);
-  }, [exerciseType, exerciseGoal]);
 
   const handleModalSubmit = () => {
     // exerciseType과 exerciseGoal과 exerciseDirection이 선택되지 않았다면 Alert 출력
