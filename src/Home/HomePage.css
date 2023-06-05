@@ -2,6 +2,15 @@
   font-family: 'Arial', sans-serif;
   background-color: #f6f9fc;
 }
+.home-page .content {
+  overflow-y: auto;
+  max-height: calc(100vh - 250px); 
+}
+
+.exercise-data {
+  max-height: 100%;
+  padding-bottom: 20px;
+}
 
 .navbar {
   margin-bottom: 40px;
