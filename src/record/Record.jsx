@@ -54,6 +54,14 @@ function Record() {
   // 운동이 끝났는지 확인하는 state
   // 목표 횟수를 달성하거나, 종료 버튼을 누르면 true로 바뀜
   const [isExerciseEnd, setIsExerciseEnd] = useState(false);
+  // count가 exerciseGoal과 같아지면 isExerciseEnd를 true로 바꾸고, setShowModal을 true로 바꿈
+  useEffect(() => {
+    if (count === exerciseGoal) {
+      setIsExerciseEnd(true);
+      setShowModal(true);
+    }
+  }, [count, exerciseGoal]);
+
   // 운동 완료 Modal
   const [showModal, setShowModal] = useState(false);
   const handleModalOpen = () => {
