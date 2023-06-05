@@ -49,7 +49,8 @@ function ExerciseEndModal({
       .post('https://shrack.p-e.kr/exercise_end', exerciseRecord)
       .then(res => {
         console.log(res);
-        //navigate('/'); //testpurpose
+        // 메인 페이지로 이동
+        window.location.href = process.env.PUBLIC_URL;
       })
       .catch(err => {
         console.log(err);
