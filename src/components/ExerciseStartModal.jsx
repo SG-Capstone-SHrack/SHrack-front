@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Button, Form, Alert, Row, Col, Modal } from 'react-bootstrap';
-import { set } from 'react-hook-form';
 
 function ExerciseStartModal({ isModalShow, setModalShow }) {
   const navigate = useNavigate();
@@ -99,10 +98,10 @@ function ExerciseStartModal({ isModalShow, setModalShow }) {
                     as="input"
                     type="number"
                     value={exerciseGoal}
-                    min="0"
-                    onChange={e =>
-                      setExerciseGoal(parseInt(e.target.value))
-                    }></Form.Control>
+                    min={0}
+                    onChange={e => {
+                      setExerciseGoal(parseInt(e.target.value));
+                    }}></Form.Control>
                 </Form.Group>
               </Col>
               <Col>
@@ -112,10 +111,10 @@ function ExerciseStartModal({ isModalShow, setModalShow }) {
                     as="input"
                     type="number"
                     value={exerciseMass}
-                    min="0"
-                    onChange={e =>
-                      setExerciseMass(e.target.value)
-                    }></Form.Control>
+                    min={0}
+                    onChange={e => {
+                      setExerciseMass(parseInt(e.target.value));
+                    }}></Form.Control>
                 </Form.Group>
               </Col>
             </Row>
