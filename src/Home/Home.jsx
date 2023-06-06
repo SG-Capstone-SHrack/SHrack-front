@@ -2,39 +2,45 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Card, Navbar, Nav, Button, ProgressBar } from 'react-bootstrap';
+import { Card, Navbar, Nav, Button } from 'react-bootstrap';
 import axios from 'axios';
 import ExerciseStartModal from '../components/ExerciseStartModal';
-import { formatISO, startOfDay } from 'date-fns';
+import { formatISO, startOfDay, isToday } from 'date-fns';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './HomePage.css'; 
+import './style.css';
 
 const HomePage = () => {
-  const [id, setId] = useState(''); 
-  const [selectedDate, setSelectedDate] = useState(new Date()); 
-
+  const [id, setId] = useState('');
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [exerciseRecords, setExerciseRecords] = useState([]);
   const [showModal, setShowModal] = useState(false);
+
   const handleLogout = () => {
     localStorage.removeItem('auth');
     window.location.href = process.env.PUBLIC_URL;
   };
-  useEffect(() => {
-    const authId = localStorage.getItem('auth');
-    setId(authId);
-  }, []);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
   useEffect(() => {
-    sendExerciseData();
+    const authId = localStorage.getItem('auth');
+    setId(authId);
+    const today = new Date();
+    if (isToday(today)) {
+      sendExerciseData(today);
+      setSelectedDate(today);
+    }
+  }, []);
+
+  useEffect(() => {
+    sendExerciseData(selectedDate); // selectedDate가 바뀔 때마다 함수 실행
   }, [selectedDate]);
 
-  const sendExerciseData = async () => {
+  const sendExerciseData = async (date) => {
     try {
-      const formattedDate = formatISO(startOfDay(selectedDate), {
+      const formattedDate = formatISO(startOfDay(date), {
         representation: 'date',
       });
       const exerciseData = {
@@ -57,15 +63,15 @@ const HomePage = () => {
   };
 
   const handleAddExercise = () => {
-    setShowModal(true); 
+    setShowModal(true);
   };
 
   const handleModalClose = () => {
-    setShowModal(false); 
+    setShowModal(false);
   };
 
   const handleModalSubmit = () => {
-    setShowModal(false); 
+    setShowModal(false);
   };
 
   return (
@@ -88,19 +94,20 @@ const HomePage = () => {
         </div>
 
         <div className="exercise-info">
-          <DatePicker
-            selected={selectedDate}
-            onChange={handleDateChange}
-            className="date-picker"
-          />
+          <div className="date-picker-container">
+            <DatePicker
+              selected={selectedDate}
+              onChange={handleDateChange}
+              className="date-picker"
+            />
+          </div>
 
-          {selectedDate && (
-            <div className="exercise-data">
+          <div className="exercise-data">
+            {selectedDate && (
               <div className="center-container">
                 <h6 className="exercise-data-title">
                   Exercise information on {selectedDate.toLocaleDateString()}
                 </h6>
-
                 {exerciseRecords.length > 0 ? (
                   exerciseRecords.map((record, index) => (
                     <Card key={index} className="exercise-card">
@@ -123,9 +130,8 @@ const HomePage = () => {
                   </p>
                 )}
               </div>
-            </div>
-          )}
-
+            )}
+          </div>
           <Button
             variant="primary"
             className="add-exercise-button"
