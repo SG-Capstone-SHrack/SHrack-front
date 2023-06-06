@@ -35,7 +35,7 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    sendExerciseData(selectedDate); // selectedDate가 바뀔 때마다 함수 실행
+    sendExerciseData(selectedDate);
   }, [selectedDate]);
 
   const sendExerciseData = async (date) => {
@@ -102,9 +102,9 @@ const HomePage = () => {
             />
           </div>
 
-          <div className="exercise-data">
+          <div className="center-container">
             {selectedDate && (
-              <div className="center-container">
+              <div>
                 <h6 className="exercise-data-title">
                   Exercise information on {selectedDate.toLocaleDateString()}
                 </h6>
@@ -132,19 +132,19 @@ const HomePage = () => {
               </div>
             )}
           </div>
-          <Button
-            variant="primary"
-            className="add-exercise-button"
-            onClick={handleAddExercise}
-          >
-            🏋️
-          </Button>
         </div>
       </div>
+
+      <Button
+        variant="primary"
+        className="add-exercise-button"
+        onClick={handleAddExercise}
+      >
+        🏋️
+      </Button>
 
       <ExerciseStartModal isModalShow={showModal} setModalShow={setShowModal} />
     </div>
   );
 };
-
 export default HomePage;
