@@ -6,14 +6,12 @@ import {
   Form,
   Container,
   FloatingLabel,
-  Alert,
   Card,
   Row,
   Col,
   Navbar,
 } from 'react-bootstrap';
 import Loader from '../components/Loader';
-import { set } from 'react-hook-form';
 
 function Signup() {
   // 회원가입 정보
