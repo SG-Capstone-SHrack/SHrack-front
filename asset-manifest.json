@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/SHrack-front/static/css/main.cc0e2870.css",
-    "main.js": "/SHrack-front/static/js/main.d8bb8e71.js",
+    "main.css": "/SHrack-front/static/css/main.02c5d078.css",
+    "main.js": "/SHrack-front/static/js/main.7431680b.js",
     "index.html": "/SHrack-front/index.html",
-    "main.cc0e2870.css.map": "/SHrack-front/static/css/main.cc0e2870.css.map",
-    "main.d8bb8e71.js.map": "/SHrack-front/static/js/main.d8bb8e71.js.map"
+    "main.02c5d078.css.map": "/SHrack-front/static/css/main.02c5d078.css.map",
+    "main.7431680b.js.map": "/SHrack-front/static/js/main.7431680b.js.map"
   },
   "entrypoints": [
-    "static/css/main.cc0e2870.css",
-    "static/js/main.d8bb8e71.js"
+    "static/css/main.02c5d078.css",
+    "static/js/main.7431680b.js"
   ]
 }
