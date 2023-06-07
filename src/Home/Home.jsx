@@ -90,7 +90,7 @@ const HomePage = () => {
       <div className="content">
         <div className="welcome">
           <h1 className="welcome-title">Welcome to SHrack!</h1>
-          <p className="welcome-subtitle">{id ? `Hello, User, ${id}` : ''}</p>
+          <p className="welcome-subtitle">{id ? `Hello, User, ${id}. click the date you want to see !` : ''}</p>
         </div>
 
         <div className="exercise-info">

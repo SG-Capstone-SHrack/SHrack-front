@@ -1,95 +1,69 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
 .home-page {
   text-align: center;
-  margin: 20px;
+  height: 100%;
 }
 .navbar .navbar-brand {
   margin-left: 20px;
 }
-.exercise-card {
-  margin-bottom: 20px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Add shadow effect */
-}
-
-.card-title {
-  font-size: 20px; /* Increase the size of exercise_name */
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.welcome-title {
-  font-size: 32px;
-  margin-bottom: 10px;
-}
-
-.welcome-subtitle {
-  font-size: 18px;
-  color: gray;
-  margin-bottom: 30px;
-}
 
 .content {
-  margin-top: 50px;
+  margin: 0 auto;
+  max-width: 800px; 
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .exercise-info {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.date-picker-container {
-  margin-bottom: 20px;
-}
-
 .exercise-data {
-  width: 100%;
   display: flex;
   justify-content: center;
 }
 
 .center-container {
-  width: 80%;
+  width: 100%;
 }
 
 .exercise-data-title {
   font-size: 20px;
   margin-bottom: 20px;
+  min-height: 0;
 }
 
 .exercise-card {
   margin-bottom: 20px;
-}
-
-.no-records {
-  font-size: 16px;
-  color: gray;
-}
-
-.add-exercise-button {
-  margin-top: 20px;
-}
-.navbar {
-  margin-bottom: 30px;
-}
-
-.modal-body {
-  text-align: center;
-}
-
-.modal-footer {
-  justify-content: center;
-}
-
-.card {
-  width: 100%;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 10px; 
+  margin-left: 20px; 
+  margin-right: 20px; 
 }
 
 .card-title {
-  font-size: 18px;
+  font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
+.welcome {
+  margin-top: 20px;
+}
 .card-text {
   font-size: 14px;
   margin-bottom: 5px;
