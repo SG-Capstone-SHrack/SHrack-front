@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button, Modal } from 'react-bootstrap';
-import { set } from 'react-hook-form';
+import Loader from '../components/Loader';
 
 function ExerciseEndModal({
   isModalShow,
@@ -20,10 +20,12 @@ function ExerciseEndModal({
     userId.current = localStorage.getItem('auth');
     endtime.current = new Date();
   }, []);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   // 서버로 운동 기록을 보내는 함수
   const sendExerciseRecord = () => {
+    setIsLoading(true);
     const exerciseRecord = {
       id: userId.current,
       //date는 startTime에서 yyyy-mm-dd만 추출
@@ -54,6 +56,9 @@ function ExerciseEndModal({
       })
       .catch(err => {
         console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
   return (
@@ -65,12 +70,11 @@ function ExerciseEndModal({
         keyboard={false}
         centered>
         <Modal.Header closeButton>
-          <Modal.Title>운동 완료</Modal.Title>
+          <Modal.Title>운동이 완료되었습니다. </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p>운동 종류: {exerciseType}</p>
           <p>총 횟수 : {count}</p>
-
           <p>운동 무게: {exerciseMass}</p>
         </Modal.Body>
         <Modal.Footer>
@@ -84,7 +88,7 @@ function ExerciseEndModal({
           <Button
             variant="primary"
             onClick={() => {
-              console.log('서버로 보내용');
+              console.log('서버로 전송');
               setModalShow(false);
               sendExerciseRecord();
             }}>
@@ -92,6 +96,7 @@ function ExerciseEndModal({
           </Button>
         </Modal.Footer>
       </Modal>
+      {isLoading && <Loader />}
     </div>
   );
 }
