@@ -18,13 +18,13 @@ function ExerciseEndModal({
   const endtime = useRef('');
   useEffect(() => {
     userId.current = localStorage.getItem('auth');
-    endtime.current = new Date();
   }, []);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   // 서버로 운동 기록을 보내는 함수
   const sendExerciseRecord = () => {
+    endtime.current = new Date();
     setIsLoading(true);
     const exerciseRecord = {
       id: userId.current,

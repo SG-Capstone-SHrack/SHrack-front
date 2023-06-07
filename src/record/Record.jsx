@@ -33,6 +33,7 @@ function Record() {
   const startTime = useRef(null);
   useEffect(() => {
     startTime.current = new Date();
+    console.log(startTime.current);
   }, []);
 
   // hasPermission이 true가 되면 1초마다 time이 1씩 증가
