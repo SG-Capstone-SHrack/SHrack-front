@@ -120,6 +120,19 @@ function ExerciseStartModal({ isModalShow, setModalShow }) {
             </Row>
             <br />
             <Row>
+              <Alert variant="secondary">
+                <ul>
+                  <li style={{ textAlign: 'left' }}>
+                    카메라가 있는 기기인지 확인해주세요.{' '}
+                  </li>
+                  <li style={{ textAlign: 'left' }}>
+                    운동 방향은 카메라에 비춰지는 방향입니다.
+                  </li>
+                </ul>
+              </Alert>
+            </Row>
+            <br />
+            <Row>
               {isAlert && (
                 <Alert variant="warning">
                   운동 종류와 운동 목표, 방향을 선택해주세요
