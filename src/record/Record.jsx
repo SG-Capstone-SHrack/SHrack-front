@@ -2,14 +2,12 @@ import React from 'react';
 import { useEffect, useState, useRef } from 'react';
 import {
   Button,
-  Form,
   Container,
-  FloatingLabel,
-  Alert,
   Row,
   Col,
   Modal,
   Navbar,
+  ProgressBar,
 } from 'react-bootstrap';
 import style from './Record.module.css';
 import CameraComponent from './Camera';
@@ -67,7 +65,7 @@ function Record() {
 
   return (
     <div>
-      <Navbar bg="primary" expand="xs" fluid>
+      <Navbar bg="primary" variant="dark" expand="xs" fluid>
         <Container>
           <Navbar.Brand>SHrack - 운동 기록 중</Navbar.Brand>
         </Container>
@@ -89,10 +87,28 @@ function Record() {
           </div>
         </Row>
 
-        <div className={style.item}>
-          <h1>{count}</h1>
-          <div>운동 시간 {time}</div>
-          <Button onClick={handleModalOpen}>종료</Button>
+        <div className={style.item} style={{ padding: '0.5vh' }}>
+          <div>
+            <ProgressBar
+              animated
+              now={(count / exerciseGoal) * 100}></ProgressBar>
+            <h2>
+              {count} / {exerciseGoal}
+            </h2>
+          </div>
+          <div>
+            <div>
+              {parseInt(time / 60)
+                .toString()
+                .padStart(2, '0')}{' '}
+              : {(time % 60).toString().padStart(2, '0')}
+            </div>
+          </div>
+          <div className="d-grid gap-2">
+            <Button onClick={handleModalOpen} style={{ fontSize: '1.25rem' }}>
+              운동 종료하기
+            </Button>
+          </div>
         </div>
       </Container>
       <ExerciseEndModal
