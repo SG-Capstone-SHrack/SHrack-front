@@ -1,3 +1,4 @@
+
 * {
   margin: 0;
   padding: 0;
@@ -12,8 +13,9 @@ html, body {
   text-align: center;
   height: 100%;
 }
+
 .navbar .navbar-brand {
-  margin-left: 20px;
+  margin-left: 0;
 }
 
 .content {
@@ -24,6 +26,7 @@ html, body {
   flex-direction: column;
   justify-content: center;
 }
+
 
 .exercise-info {
   flex-grow: 1;
@@ -51,10 +54,16 @@ html, body {
   margin-bottom: 20px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   padding: 10px; 
-  margin-left: 20px; 
+  margin-left: 20px;
   margin-right: 20px; 
+  text-align: left; 
+  position: relative; 
 }
 
+.exercise-card .card-text::before {
+  content: "•"; 
+  margin-right: 5px; 
+}
 .card-title {
   font-size: 24px;
   font-weight: bold;
@@ -62,7 +71,7 @@ html, body {
 }
 
 .welcome {
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 .card-text {
   font-size: 14px;
