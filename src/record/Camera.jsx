@@ -56,7 +56,7 @@ function CameraComponent({
           )
           .then(res => {
             console.log(res.data.count);
-            if (parseInt(res.data.count) > count) {
+            if (parseInt(res.data.count) > count && count < exerciseGoal) {
               setCount(res.data.count);
             }
           })
@@ -65,7 +65,7 @@ function CameraComponent({
           });
       },
       'image/jpeg',
-      0.1,
+      0.075, // set the image quality
     );
   };
 
@@ -110,7 +110,7 @@ function CameraComponent({
 
   useEffect(() => {
     if (hasPermission && !isExerciseEnd) {
-      const newIntervalId = setInterval(sendImage, 5000);
+      const newIntervalId = setInterval(sendImage, 200); // set the sending rate
       setIntervalId(newIntervalId);
 
       return () => {
