@@ -67,12 +67,12 @@ function Record() {
 
   return (
     <div>
+      <Navbar bg="primary" expand="xs" fluid>
+        <Container>
+          <Navbar.Brand>SHrack - 운동 기록 중</Navbar.Brand>
+        </Container>
+      </Navbar>
       <Container>
-        <Navbar>
-          <Container>
-            <Navbar.Brand>SHrack - 운동 기록 중</Navbar.Brand>
-          </Container>
-        </Navbar>
         <Row className="justify-content-center">
           <div className={style.item_camera}>
             <CameraComponent
