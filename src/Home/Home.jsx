@@ -47,6 +47,7 @@ const HomePage = () => {
         id,
         date: formattedDate,
         startTime: addHours(record.start_time, 9),
+        endTime: addHours(record.end_time, 9),
       };
       const response = await axios.post(
         'https://shrack.p-e.kr/exercise_log',
