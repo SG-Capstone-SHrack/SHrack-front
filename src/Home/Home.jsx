@@ -5,7 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Card, Navbar, Nav, Button } from 'react-bootstrap';
 import axios from 'axios';
 import ExerciseStartModal from '../components/ExerciseStartModal';
-import { formatISO, startOfDay, isToday } from 'date-fns';
+import { addHours, formatISO, startOfDay, isToday } from 'date-fns';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css';
 
@@ -46,6 +46,7 @@ const HomePage = () => {
       const exerciseData = {
         id,
         date: formattedDate,
+        startTime: addHours(record.start_time, 9),
       };
       const response = await axios.post(
         'https://shrack.p-e.kr/exercise_log',
@@ -61,6 +62,7 @@ const HomePage = () => {
       console.log(error);
     }
   };
+  
 
   const handleAddExercise = () => {
     setShowModal(true);
