@@ -4,15 +4,17 @@
 
 ## 이용 안내
 
+### 회원가입 및 로그인
+
 [SHrack](https://sg-capstone-shrack.github.io/SHrack-front/)
 
-![로그인화면](로그인화면)
+![로그인화면](http://cscp2.sogang.ac.kr/CSE4186/CSE4186/UserData/SHrack_%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8_%EA%B5%AC%EC%A1%B0.png)
 
 ![회원가입화면](회원가입화면)
 
 회원가입 후 로그인하여 메인 페이지로 이동할 수 있습니다.
 
-## 운동 기록하기
+### 운동 기록하기
 
 ![메인화면](메인화면)
 
