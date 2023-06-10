@@ -5,8 +5,11 @@
 ## 이용 안내
 
 [SHrack](https://sg-capstone-shrack.github.io/SHrack-front/)
+
 ![로그인화면](로그인화면)
+
 ![회원가입화면](회원가입화면)
+
 회원가입 후 로그인하여 메인 페이지로 이동할 수 있습니다.
 
 ## 운동 기록하기
